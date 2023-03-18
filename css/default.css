@@ -322,6 +322,7 @@ del, s, strike {
     float: right;
     width: 15rem;
     position: relative;
+    word-break: break-all;
 }
 
 .Liberty .content-wrapper .liberty-sidebar .liberty-right-fixed {
