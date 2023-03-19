@@ -1,52 +1,52 @@
 <template>
-    <div class="Liberty" :style="skinConfig">
-        <div id="top"></div>
-        <div class="nav-wrapper navbar-fixed-top">
-            <nav class="navbar navbar-dark">
-                <nuxt-link class="navbar-brand" to="/" v-text="$store.state.config['skin.liberty.navbar_logo_text']"/>
-                <ul class="nav navbar-nav">
-                    <li class="nav-item">
-                        <nuxt-link class="nav-link" to="/RecentChanges"><span class="fa fa-refresh"></span><span class="hide-title">최근 변경</span></nuxt-link>
-                    </li>
-                    <li class="nav-item">
-                        <nuxt-link class="nav-link" to="/RecentDiscuss"><span class="fa fa-comments"></span><span class="hide-title">최근 토론</span></nuxt-link>
-                    </li>
-                    <li class="nav-item">
-                        <nuxt-link class="nav-link" to="/random"><span class="fa fa-random"></span><span class="hide-title">임의 문서</span></nuxt-link>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-fix" href="#" data-toggle="dropdown" aria-expanded="false">
-                            <span class="fa fa-gear"></span><span class="hide-title">도구</span>
-                        </a>
-                        <div class="dropdown-menu" role="menu">
-                            <nuxt-link to="/NeededPages" class="dropdown-item">작성이 필요한 문서</nuxt-link>
-                            <nuxt-link to="/OrphanedPages" class="dropdown-item">고립된 문서</nuxt-link>
-                            <nuxt-link to="/UncategorizedPages" class="dropdown-item">분류가 되지 않은 문서</nuxt-link>
-                            <nuxt-link to="/OldPages" class="dropdown-item">편집된 지 오래된 문서</nuxt-link>
-                            <nuxt-link to="/ShortestPages" class="dropdown-item">내용이 짧은 문서</nuxt-link>
-                            <nuxt-link to="/LongestPages" class="dropdown-item">내용이 긴 문서</nuxt-link>
-                            <nuxt-link to="/BlockHistory" class="dropdown-item">차단 내역</nuxt-link>
-                            <nuxt-link to="/RandomPage" class="dropdown-item">RandomPage</nuxt-link>
-                            <nuxt-link to="/Upload" class="dropdown-item">파일 올리기</nuxt-link>
-                            <nuxt-link to="/License" class="dropdown-item">라이선스</nuxt-link>
-                            <template v-if="$store.state.session.menus.length">
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link v-for="m in $store.state.session.menus" :to="m.l" v-bind:key="m.l" class="dropdown-item" v-text="m.t"/>
-                            </template>
-                        </div>
-                    </li>
-                </ul>
-                <div class="navbar-login">
-                    <template v-if="$store.state.session.member">
-                        <div class="dropdown login-menu">
-                            <a class="dropdown-toggle" type="button" id="login-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="profile-img" :src="$store.state.session.member.gravatar_url">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
-                                <div class="username dropdown-item"><b>{{ $store.state.session.member.username }}</b><br>Member</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" @click.prevent="$modal.show('theseed-setting');" class="dropdown-item">설정</a>
-                                <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
+	<div class="Liberty" :style="skinConfig">
+		<div id="top"></div>
+		<div class="nav-wrapper navbar-fixed-top">
+			<nav class="navbar navbar-dark">
+				<nuxt-link class="navbar-brand" to="/" v-text="$store.state.config['skin.liberty.navbar_logo_text']"/>
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<nuxt-link class="nav-link" to="/RecentChanges"><span class="fa fa-refresh"></span><span class="hide-title">최근 변경</span></nuxt-link>
+					</li>
+					<li class="nav-item">
+						<nuxt-link class="nav-link" to="/RecentDiscuss"><span class="fa fa-comments"></span><span class="hide-title">최근 토론</span></nuxt-link>
+					</li>
+					<li class="nav-item">
+						<nuxt-link class="nav-link" to="/random"><span class="fa fa-random"></span><span class="hide-title">임의 문서</span></nuxt-link>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle dropdown-toggle-fix" href="#" data-toggle="dropdown" aria-expanded="false">
+							<span class="fa fa-gear"></span><span class="hide-title">도구</span>
+						</a>
+						<div class="dropdown-menu" role="menu">
+							<nuxt-link to="/NeededPages" class="dropdown-item">작성이 필요한 문서</nuxt-link>
+							<nuxt-link to="/OrphanedPages" class="dropdown-item">고립된 문서</nuxt-link>
+							<nuxt-link to="/UncategorizedPages" class="dropdown-item">분류가 되지 않은 문서</nuxt-link>
+							<nuxt-link to="/OldPages" class="dropdown-item">편집된 지 오래된 문서</nuxt-link>
+							<nuxt-link to="/ShortestPages" class="dropdown-item">내용이 짧은 문서</nuxt-link>
+							<nuxt-link to="/LongestPages" class="dropdown-item">내용이 긴 문서</nuxt-link>
+							<nuxt-link to="/BlockHistory" class="dropdown-item">차단 내역</nuxt-link>
+							<nuxt-link to="/RandomPage" class="dropdown-item">RandomPage</nuxt-link>
+							<nuxt-link to="/Upload" class="dropdown-item">파일 올리기</nuxt-link>
+							<nuxt-link to="/License" class="dropdown-item">라이선스</nuxt-link>
+							<template v-if="$store.state.session.menus.length">
+								<div class="dropdown-divider"></div>
+								<nuxt-link v-for="m in $store.state.session.menus" :to="m.l" v-bind:key="m.l" class="dropdown-item" v-text="m.t"/>
+							</template>
+						</div>
+					</li>
+				</ul>
+				<div class="navbar-login">
+					<template v-if="$store.state.session.member">
+						<div class="dropdown login-menu">
+							<a class="dropdown-toggle" type="button" id="login-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img class="profile-img" :src="$store.state.session.member.gravatar_url">
+							</a>
+							<div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
+								<div class="username dropdown-item"><b>{{ $store.state.session.member.username }}</b><br>Member</div>
+								<div class="dropdown-divider"></div>
+								<a href="#" @click.prevent="$modal.show('theseed-setting');" class="dropdown-item">설정</a>
+								<template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
 									<a href="#" v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
 										@click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
 										class="dropdown-item"
@@ -56,28 +56,28 @@
 										class="dropdown-item"
 									>라이트 테마로</a>
 								</template>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link to="/member/mypage" class="dropdown-item">내 정보</nuxt-link>
-                                <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'w')" class="dropdown-item">내 사용자 문서</nuxt-link>
-                                <nuxt-link to="/member/starred_documents" class="dropdown-item">내 문서함</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link class="dropdown-item" :to="contribution_author_link($store.state.session.member.username)">내 문서 기여 목록</nuxt-link>
-                                <nuxt-link class="dropdown-item" :to="contribution_author_link_discuss($store.state.session.member.username)">내 토론 기여 목록</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item">로그아웃</nuxt-link>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="dropdown login-menu">
-                            <a class="dropdown-toggle" type="button" id="login-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="fa fa-user"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
-                                <div class="username dropdown-item"><b>{{ $store.state.session.ip }}</b><br>Please login!</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" @click.prevent="$modal.show('theseed-setting');" class="dropdown-item">설정</a>
-                                <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
+								<div class="dropdown-divider"></div>
+								<nuxt-link to="/member/mypage" class="dropdown-item">내 정보</nuxt-link>
+								<nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'w')" class="dropdown-item">내 사용자 문서</nuxt-link>
+								<nuxt-link to="/member/starred_documents" class="dropdown-item">내 문서함</nuxt-link>
+								<div class="dropdown-divider"></div>
+								<nuxt-link class="dropdown-item" :to="contribution_author_link($store.state.session.member.username)">내 문서 기여 목록</nuxt-link>
+								<nuxt-link class="dropdown-item" :to="contribution_author_link_discuss($store.state.session.member.username)">내 토론 기여 목록</nuxt-link>
+								<div class="dropdown-divider"></div>
+								<nuxt-link :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item">로그아웃</nuxt-link>
+							</div>
+						</div>
+					</template>
+					<template v-else>
+						<div class="dropdown login-menu">
+							<a class="dropdown-toggle" type="button" id="login-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="fa fa-user"></span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
+								<div class="username dropdown-item"><b>{{ $store.state.session.ip }}</b><br>Please login!</div>
+								<div class="dropdown-divider"></div>
+								<a href="#" @click.prevent="$modal.show('theseed-setting');" class="dropdown-item">설정</a>
+								<template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
 									<a href="#" v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
 										@click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
 										class="dropdown-item"
@@ -87,54 +87,54 @@
 										class="dropdown-item"
 									>라이트 테마로</a>
 								</template>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link class="dropdown-item" :to="contribution_ip_link($store.state.session.ip)">내 문서 기여 목록</nuxt-link>
-                                <nuxt-link class="dropdown-item" :to="contribution_ip_link_discuss($store.state.session.ip)">내 토론 기여 목록</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item">로그인</nuxt-link>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-                <search-form />
-            </nav>
-        </div>
-        <div class="content-wrapper">
-            <div class="liberty-sidebar">
-                <div class="liberty-right-fixed" v-bind:class="{ 'fixed': $store.state.localConfig['liberty.fixed_sidebar'] === true }">
-                    <div class="live-recent">
-                        <div class="live-recent-header">
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="liberty-recent-tab1">최근 변경</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <recent-card />
-                        <div class="live-recent-footer">
-                            <nuxt-link to="/RecentChanges" title="최근 변경내역"><span class="label label-info">더 보기</span></nuxt-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid liberty-content">
-                <div id="site-notice" class="notification" v-if="$store.state.config['wiki.sitenotice']">
-                    <span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
-                </div>
-                <div class="liberty-content-header">
+								<div class="dropdown-divider"></div>
+								<nuxt-link class="dropdown-item" :to="contribution_ip_link($store.state.session.ip)">내 문서 기여 목록</nuxt-link>
+								<nuxt-link class="dropdown-item" :to="contribution_ip_link_discuss($store.state.session.ip)">내 토론 기여 목록</nuxt-link>
+								<div class="dropdown-divider"></div>
+								<nuxt-link :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item">로그인</nuxt-link>
+							</div>
+						</div>
+					</template>
+				</div>
+				<search-form />
+			</nav>
+		</div>
+		<div class="content-wrapper">
+			<div class="liberty-sidebar">
+				<div class="liberty-right-fixed" v-bind:class="{ 'fixed': $store.state.localConfig['liberty.fixed_sidebar'] === true }">
+					<div class="live-recent">
+						<div class="live-recent-header">
+							<ul class="nav nav-tabs">
+								<li class="nav-item">
+									<a class="nav-link active" id="liberty-recent-tab1">최근 변경</a>
+								</li>
+							</ul>
+						</div>
+						<recent-card />
+						<div class="live-recent-footer">
+							<nuxt-link to="/RecentChanges" title="최근 변경내역"><span class="label label-info">더 보기</span></nuxt-link>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container-fluid liberty-content">
+				<div id="site-notice" class="notification" v-if="$store.state.config['wiki.sitenotice']">
+					<span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
+				</div>
+				<div class="liberty-content-header">
 					<div class="content-tools" v-if="['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes($store.state.page.viewName) || $store.state.page.data.menus">
 						<div class="btn-group" role="group" aria-label="content-tools">
 							<template v-if="$store.state.page.viewName === 'wiki' || $store.state.page.viewName === 'notfound'">
 								<nuxt-link v-if="$store.state.page.data.starred"
-                                        :to="doc_action_link($store.state.page.data.document, 'member/unstar')" class="btn btn-secondary tools-btn" v-tooltip="`Unstar`">
-                                <span class="fa fa-star"></span>
-                                <span class="star-count">{{ $store.state.page.data.star_count }}</span>
-                            </nuxt-link>
-                            <nuxt-link v-else-if="$store.state.page.data.star_count || $store.state.page.data.star_count === 0"
-                                       :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
-                                <span class="fa fa-star-o"></span>
-                                <span class="star-count">{{ $store.state.page.data.star_count }}</span>
-                            </nuxt-link>
+										:to="doc_action_link($store.state.page.data.document, 'member/unstar')" class="btn btn-secondary tools-btn" v-tooltip="`Unstar`">
+								<span class="fa fa-star"></span>
+								<span class="star-count">{{ $store.state.page.data.star_count }}</span>
+							</nuxt-link>
+							<nuxt-link v-else-if="$store.state.page.data.star_count || $store.state.page.data.star_count === 0"
+									   :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
+								<span class="fa fa-star-o"></span>
+								<span class="star-count">{{ $store.state.page.data.star_count }}</span>
+							</nuxt-link>
 								<nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
 								<nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn" v-bind:class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
 								<nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
@@ -169,54 +169,54 @@
 							</template>
 						</div>
 					</div>
-                    <div class="title">
-                        <h1 v-if="$store.state.page.data.document">
-                            <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span class="namespace" v-if="$store.state.page.data.document.namespace !== '문서'">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
-                            <small v-if="$store.state.page.viewName === 'edit_edit_request'">(편집 요청)</small>
-                            <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.section">(r{{$store.state.page.data.body.baserev}} 문단 편집)</small>
-                            <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.baserev === '0'">(새 문서 생성)</small>
-                            <small v-else-if="$store.state.page.viewName === 'edit'">(r{{$store.state.page.data.body.baserev}} 편집)</small>
-                            <small v-else-if="$store.state.page.viewName === 'history'">(문서 역사)</small>
-                            <small v-else-if="$store.state.page.viewName === 'backlink'">(역링크)</small>
-                            <small v-else-if="$store.state.page.viewName === 'move'">(이동)</small>
-                            <small v-else-if="$store.state.page.viewName === 'delete'">(삭제)</small>
-                            <small v-else-if="$store.state.page.viewName === 'acl'">(ACL)</small>
-                            <small v-else-if="$store.state.page.viewName === 'thread'">(토론)</small>
-                            <small v-else-if="$store.state.page.viewName === 'thread_list'">(토론 목록)</small>
-                            <small v-else-if="$store.state.page.viewName === 'thread_list_close'">(닫힌 토론)</small>
-                            <small v-else-if="$store.state.page.viewName === 'edit_request_close'">(닫힌 편집 요청)</small>
-                            <small v-else-if="$store.state.page.viewName === 'diff'">(비교)</small>
-                            <small v-else-if="$store.state.page.viewName === 'revert' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}}로 되돌리기)</small>
-                            <small v-else-if="$store.state.page.viewName === 'raw' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}} RAW)</small>
-                            <small v-else-if="$store.state.page.viewName === 'blame' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}} Blame)</small>
-                            <small v-else-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}} 판)</small>
-                        </h1>
-                        <h1 v-else>{{ $store.state.page.title }}</h1>
-                    </div>
-                </div>
-                <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" class="alert alert-info fade in" id="userDiscussAlert" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
-                            <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Close</span>
-                        </button>
-                        현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
-                    </div>
-                    <div v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.rev && $store.state.page.data.date" class="alert alert-danger" role="alert">
-                        <b>[주의!]</b> 문서의 이전 버전(<local-date :date="$store.state.page.data.date" />에 수정)을 보고 있습니다. <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')">최신 버전으로 이동</nuxt-link>
-                    </div>
-                    <nuxt />
-                    <div v-if="$store.state.page.viewName === 'license'">
-                        <h2>Liberty skin license</h2>
-                        <pre>
-                    GNU GENERAL PUBLIC LICENSE
-                       Version 3, 29 June 2007
+					<div class="title">
+						<h1 v-if="$store.state.page.data.document">
+							<nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span class="namespace" v-if="$store.state.page.data.document.namespace !== '문서'">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
+							<small v-if="$store.state.page.viewName === 'edit_edit_request'">(편집 요청)</small>
+							<small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.section">(r{{$store.state.page.data.body.baserev}} 문단 편집)</small>
+							<small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.baserev === '0'">(새 문서 생성)</small>
+							<small v-else-if="$store.state.page.viewName === 'edit'">(r{{$store.state.page.data.body.baserev}} 편집)</small>
+							<small v-else-if="$store.state.page.viewName === 'history'">(문서 역사)</small>
+							<small v-else-if="$store.state.page.viewName === 'backlink'">(역링크)</small>
+							<small v-else-if="$store.state.page.viewName === 'move'">(이동)</small>
+							<small v-else-if="$store.state.page.viewName === 'delete'">(삭제)</small>
+							<small v-else-if="$store.state.page.viewName === 'acl'">(ACL)</small>
+							<small v-else-if="$store.state.page.viewName === 'thread'">(토론)</small>
+							<small v-else-if="$store.state.page.viewName === 'thread_list'">(토론 목록)</small>
+							<small v-else-if="$store.state.page.viewName === 'thread_list_close'">(닫힌 토론)</small>
+							<small v-else-if="$store.state.page.viewName === 'edit_request_close'">(닫힌 편집 요청)</small>
+							<small v-else-if="$store.state.page.viewName === 'diff'">(비교)</small>
+							<small v-else-if="$store.state.page.viewName === 'revert' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}}로 되돌리기)</small>
+							<small v-else-if="$store.state.page.viewName === 'raw' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}} RAW)</small>
+							<small v-else-if="$store.state.page.viewName === 'blame' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}} Blame)</small>
+							<small v-else-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.rev">(r{{$store.state.page.data.rev}} 판)</small>
+						</h1>
+						<h1 v-else>{{ $store.state.page.title }}</h1>
+					</div>
+				</div>
+				<div class="liberty-content-main wiki-article">
+					<div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" class="alert alert-info fade in" id="userDiscussAlert" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
+							<span aria-hidden="true">&times;</span>
+							<span class="sr-only">Close</span>
+						</button>
+						현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
+					</div>
+					<div v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.rev && $store.state.page.data.date" class="alert alert-danger" role="alert">
+						<b>[주의!]</b> 문서의 이전 버전(<local-date :date="$store.state.page.data.date" />에 수정)을 보고 있습니다. <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')">최신 버전으로 이동</nuxt-link>
+					</div>
+					<nuxt />
+					<div v-if="$store.state.page.viewName === 'license'">
+						<h2>Liberty skin license</h2>
+						<pre>
+					GNU GENERAL PUBLIC LICENSE
+					   Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. &lt;http://fsf.org/&gt;
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
-                            Preamble
+							Preamble
 
   The GNU General Public License is a free, copyleft license for
 software and other kinds of works.
@@ -279,7 +279,7 @@ patents cannot be used to render the program non-free.
   The precise terms and conditions for copying, distribution and
 modification follow.
 
-                       TERMS AND CONDITIONS
+					   TERMS AND CONDITIONS
 
   0. Definitions.
 
@@ -422,26 +422,26 @@ and you may offer support or warranty protection for a fee.
 produce it from the Program, in the form of source code under the
 terms of section 4, provided that you also meet all of these conditions:
 
-    a) The work must carry prominent notices stating that you modified
-    it, and giving a relevant date.
+	a) The work must carry prominent notices stating that you modified
+	it, and giving a relevant date.
 
-    b) The work must carry prominent notices stating that it is
-    released under this License and any conditions added under section
-    7.  This requirement modifies the requirement in section 4 to
-    "keep intact all notices".
+	b) The work must carry prominent notices stating that it is
+	released under this License and any conditions added under section
+	7.  This requirement modifies the requirement in section 4 to
+	"keep intact all notices".
 
-    c) You must license the entire work, as a whole, under this
-    License to anyone who comes into possession of a copy.  This
-    License will therefore apply, along with any applicable section 7
-    additional terms, to the whole of the work, and all its parts,
-    regardless of how they are packaged.  This License gives no
-    permission to license the work in any other way, but it does not
-    invalidate such permission if you have separately received it.
+	c) You must license the entire work, as a whole, under this
+	License to anyone who comes into possession of a copy.  This
+	License will therefore apply, along with any applicable section 7
+	additional terms, to the whole of the work, and all its parts,
+	regardless of how they are packaged.  This License gives no
+	permission to license the work in any other way, but it does not
+	invalidate such permission if you have separately received it.
 
-    d) If the work has interactive user interfaces, each must display
-    Appropriate Legal Notices; however, if the Program has interactive
-    interfaces that do not display Appropriate Legal Notices, your
-    work need not make them do so.
+	d) If the work has interactive user interfaces, each must display
+	Appropriate Legal Notices; however, if the Program has interactive
+	interfaces that do not display Appropriate Legal Notices, your
+	work need not make them do so.
 
   A compilation of a covered work with other separate and independent
 works, which are not by their nature extensions of the covered work,
@@ -460,46 +460,46 @@ of sections 4 and 5, provided that you also convey the
 machine-readable Corresponding Source under the terms of this License,
 in one of these ways:
 
-    a) Convey the object code in, or embodied in, a physical product
-    (including a physical distribution medium), accompanied by the
-    Corresponding Source fixed on a durable physical medium
-    customarily used for software interchange.
+	a) Convey the object code in, or embodied in, a physical product
+	(including a physical distribution medium), accompanied by the
+	Corresponding Source fixed on a durable physical medium
+	customarily used for software interchange.
 
-    b) Convey the object code in, or embodied in, a physical product
-    (including a physical distribution medium), accompanied by a
-    written offer, valid for at least three years and valid for as
-    long as you offer spare parts or customer support for that product
-    model, to give anyone who possesses the object code either (1) a
-    copy of the Corresponding Source for all the software in the
-    product that is covered by this License, on a durable physical
-    medium customarily used for software interchange, for a price no
-    more than your reasonable cost of physically performing this
-    conveying of source, or (2) access to copy the
-    Corresponding Source from a network server at no charge.
+	b) Convey the object code in, or embodied in, a physical product
+	(including a physical distribution medium), accompanied by a
+	written offer, valid for at least three years and valid for as
+	long as you offer spare parts or customer support for that product
+	model, to give anyone who possesses the object code either (1) a
+	copy of the Corresponding Source for all the software in the
+	product that is covered by this License, on a durable physical
+	medium customarily used for software interchange, for a price no
+	more than your reasonable cost of physically performing this
+	conveying of source, or (2) access to copy the
+	Corresponding Source from a network server at no charge.
 
-    c) Convey individual copies of the object code with a copy of the
-    written offer to provide the Corresponding Source.  This
-    alternative is allowed only occasionally and noncommercially, and
-    only if you received the object code with such an offer, in accord
-    with subsection 6b.
+	c) Convey individual copies of the object code with a copy of the
+	written offer to provide the Corresponding Source.  This
+	alternative is allowed only occasionally and noncommercially, and
+	only if you received the object code with such an offer, in accord
+	with subsection 6b.
 
-    d) Convey the object code by offering access from a designated
-    place (gratis or for a charge), and offer equivalent access to the
-    Corresponding Source in the same way through the same place at no
-    further charge.  You need not require recipients to copy the
-    Corresponding Source along with the object code.  If the place to
-    copy the object code is a network server, the Corresponding Source
-    may be on a different server (operated by you or a third party)
-    that supports equivalent copying facilities, provided you maintain
-    clear directions next to the object code saying where to find the
-    Corresponding Source.  Regardless of what server hosts the
-    Corresponding Source, you remain obligated to ensure that it is
-    available for as long as needed to satisfy these requirements.
+	d) Convey the object code by offering access from a designated
+	place (gratis or for a charge), and offer equivalent access to the
+	Corresponding Source in the same way through the same place at no
+	further charge.  You need not require recipients to copy the
+	Corresponding Source along with the object code.  If the place to
+	copy the object code is a network server, the Corresponding Source
+	may be on a different server (operated by you or a third party)
+	that supports equivalent copying facilities, provided you maintain
+	clear directions next to the object code saying where to find the
+	Corresponding Source.  Regardless of what server hosts the
+	Corresponding Source, you remain obligated to ensure that it is
+	available for as long as needed to satisfy these requirements.
 
-    e) Convey the object code using peer-to-peer transmission, provided
-    you inform other peers where the object code and Corresponding
-    Source of the work are being offered to the general public at no
-    charge under subsection 6d.
+	e) Convey the object code using peer-to-peer transmission, provided
+	you inform other peers where the object code and Corresponding
+	Source of the work are being offered to the general public at no
+	charge under subsection 6d.
 
   A separable portion of the object code, whose source code is excluded
 from the Corresponding Source as a System Library, need not be
@@ -573,28 +573,28 @@ for which you have or can give appropriate copyright permission.
 add to a covered work, you may (if authorized by the copyright holders of
 that material) supplement the terms of this License with terms:
 
-    a) Disclaiming warranty or limiting liability differently from the
-    terms of sections 15 and 16 of this License; or
+	a) Disclaiming warranty or limiting liability differently from the
+	terms of sections 15 and 16 of this License; or
 
-    b) Requiring preservation of specified reasonable legal notices or
-    author attributions in that material or in the Appropriate Legal
-    Notices displayed by works containing it; or
+	b) Requiring preservation of specified reasonable legal notices or
+	author attributions in that material or in the Appropriate Legal
+	Notices displayed by works containing it; or
 
-    c) Prohibiting misrepresentation of the origin of that material, or
-    requiring that modified versions of such material be marked in
-    reasonable ways as different from the original version; or
+	c) Prohibiting misrepresentation of the origin of that material, or
+	requiring that modified versions of such material be marked in
+	reasonable ways as different from the original version; or
 
-    d) Limiting the use for publicity purposes of names of licensors or
-    authors of the material; or
+	d) Limiting the use for publicity purposes of names of licensors or
+	authors of the material; or
 
-    e) Declining to grant rights under trademark law for use of some
-    trade names, trademarks, or service marks; or
+	e) Declining to grant rights under trademark law for use of some
+	trade names, trademarks, or service marks; or
 
-    f) Requiring indemnification of licensors and authors of that
-    material by anyone who conveys the material (or modified versions of
-    it) with contractual assumptions of liability to the recipient, for
-    any liability that these contractual assumptions directly impose on
-    those licensors and authors.
+	f) Requiring indemnification of licensors and authors of that
+	material by anyone who conveys the material (or modified versions of
+	it) with contractual assumptions of liability to the recipient, for
+	any liability that these contractual assumptions directly impose on
+	those licensors and authors.
 
   All other non-permissive additional terms are considered "further
 restrictions" within the meaning of section 10.  If the Program as you
@@ -829,9 +829,9 @@ an absolute waiver of all civil liability in connection with the
 Program, unless a warranty or assumption of liability accompanies a
 copy of the Program in return for a fee.
 
-                     END OF TERMS AND CONDITIONS
+					 END OF TERMS AND CONDITIONS
 
-            How to Apply These Terms to Your New Programs
+			How to Apply These Terms to Your New Programs
 
   If you develop a new program, and you want it to be of the greatest
 possible use to the public, the best way to achieve this is to make it
@@ -842,31 +842,31 @@ to attach them to the start of each source file to most effectively
 state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
-    Liberty-MW-Skin
-    Copyright (C) 2016  Liberty LLC.
+	Liberty-MW-Skin
+	Copyright (C) 2016  Liberty LLC.
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
 
 Also add information on how to contact you by electronic and paper mail.
 
   If the program does terminal interaction, make it output a short
 notice like this when it starts in an interactive mode:
 
-    Liberty-MW-Skin  Copyright (C) 2016  Liberty LLC.
-    This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
-    This is free software, and you are welcome to redistribute it
-    under certain conditions; type `show c' for details.
+	Liberty-MW-Skin  Copyright (C) 2016  Liberty LLC.
+	This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+	This is free software, and you are welcome to redistribute it
+	under certain conditions; type `show c' for details.
 
 The hypothetical commands `show w' and `show c' should show the appropriate
 parts of the General Public License.  Of course, your program's commands
@@ -883,33 +883,33 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;.
-                        </pre>
-                    </div>
-                </div>
-                <div class="liberty-footer" id="bottom">
-                    <ul class="footer-info" v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.date">
-                        <li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" />에 마지막으로 편집되었습니다.</li>
-                        <li class="footer-info-copyright" v-html="$store.state.config['wiki.copyright_text']" />
-                    </ul>
-                    <ul class="footer-places" v-html="$store.state.config['skin.liberty.footer_html']" />
-                    <ul class="footer-icons">
-                        <li class="footer-poweredbyico">
-                            <a href="//gitlab.com/librewiki/Liberty-MW-Skin">Liberty</a> | <a href="//theseed.io/">the seed</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-buttons">
-            <nuxt-link class="scroll-toc" to="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link class="scroll-button" to="#top" id="left"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link class="scroll-bottom" to="#bottom" id="right"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
-        </div>
-        <setting>
-            <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
-            <setting-item-checkbox label="페이지 이동 시 검색 창 초기화" ckey="liberty.reset_search_on_move" default="checked" />
-        </setting>
-    </div>
+						</pre>
+					</div>
+				</div>
+				<div class="liberty-footer" id="bottom">
+					<ul class="footer-info" v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.date">
+						<li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" />에 마지막으로 편집되었습니다.</li>
+						<li class="footer-info-copyright" v-html="$store.state.config['wiki.copyright_text']" />
+					</ul>
+					<ul class="footer-places" v-html="$store.state.config['skin.liberty.footer_html']" />
+					<ul class="footer-icons">
+						<li class="footer-poweredbyico">
+							<a href="//gitlab.com/librewiki/Liberty-MW-Skin">Liberty</a> | <a href="//theseed.io/">the seed</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="scroll-buttons">
+			<nuxt-link class="scroll-toc" to="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></nuxt-link>
+			<nuxt-link class="scroll-button" to="#top" id="left"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
+			<nuxt-link class="scroll-bottom" to="#bottom" id="right"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
+		</div>
+		<setting>
+			<setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
+			<setting-item-checkbox label="페이지 이동 시 검색 창 초기화" ckey="liberty.reset_search_on_move" default="checked" />
+		</setting>
+	</div>
 </template>
 
 <style>
@@ -931,34 +931,34 @@ import RecentCard from './components/recentCard';
 import SearchForm from './components/searchForm';
 
 if (process.browser) {
-    try {
-        require("./js/jquery-2.2.4.min.js");
-        //require("./js/tether.min.js");
-        require('./bootstrap/js/bootstrap.min.js');
+	try {
+		require("./js/jquery-2.2.4.min.js");
+		//require("./js/tether.min.js");
+		require('./bootstrap/js/bootstrap.min.js');
 
-    } catch(e) {}
+	} catch(e) {}
 }
 export default {
-    mixins: [Common],
-    components: {
-        Setting,
-        SettingItemCheckbox,
-        LocalDate,
-        RecentCard,
-        SearchForm
-    },
-    computed: {
-        skinConfig() {
-            return {
-                '--liberty-navbar-color': this.$store.state.config['skin.liberty.navbar_color'],
-                '--liberty-navbar-logo-image': this.$store.state.config['skin.liberty.navbar_logo_image'],
-                '--liberty-navbar-logo-minimum-width': this.$store.state.config['skin.liberty.navbar_logo_minimum_width'],
-                '--liberty-navbar-logo-width': this.$store.state.config['skin.liberty.navbar_logo_width'],
-                '--liberty-navbar-logo-size': this.$store.state.config['skin.liberty.navbar_logo_size'],
-                '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
-                '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
-            };
-        }
-    }
+	mixins: [Common],
+	components: {
+		Setting,
+		SettingItemCheckbox,
+		LocalDate,
+		RecentCard,
+		SearchForm
+	},
+	computed: {
+		skinConfig() {
+			return {
+				'--liberty-navbar-color': this.$store.state.config['skin.liberty.navbar_color'],
+				'--liberty-navbar-logo-image': this.$store.state.config['skin.liberty.navbar_logo_image'],
+				'--liberty-navbar-logo-minimum-width': this.$store.state.config['skin.liberty.navbar_logo_minimum_width'],
+				'--liberty-navbar-logo-width': this.$store.state.config['skin.liberty.navbar_logo_width'],
+				'--liberty-navbar-logo-size': this.$store.state.config['skin.liberty.navbar_logo_size'],
+				'--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
+				'--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
+			};
+		}
+	}
 }
 </script>
