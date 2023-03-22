@@ -209,8 +209,8 @@
                     <div v-if="$store.state.page.viewName === 'license'">
                         <h2>Liberty skin license</h2>
                         <pre>
-                            GNU GENERAL PUBLIC LICENSE
-                            Version 3, 29 June 2007
+                    GNU GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. &lt;http://fsf.org/&gt;
  Everyone is permitted to copy and distribute verbatim copies
