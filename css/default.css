@@ -641,6 +641,7 @@ del, s, strike {
 .dropdown-menu .dropdown-item:hover {
     background-color: var(--liberty-navbar-color, #5997f3);
     color: #fff;
+    transition: 0.3s;
 }
 
 .dropdown-divider {
