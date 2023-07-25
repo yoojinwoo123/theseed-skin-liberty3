@@ -31,7 +31,7 @@
                             <nuxt-link to="/License" class="dropdown-item">라이선스</nuxt-link>
                             <template v-if="$store.state.session.menus.length">
                                 <div class="dropdown-divider"></div>
-                                <nuxt-link v-for="m in $store.state.session.menus" :to="m.l" v-bind:key="m.l" class="dropdown-item" v-text="m.t"/>
+                                <nuxt-link v-for="m in $store.state.session.menus" :key="m.l" :to="m.l" class="dropdown-item" v-text="m.t"/>
                             </template>
                         </div>
                     </li>
@@ -39,21 +39,21 @@
                 <div class="navbar-login">
                     <template v-if="$store.state.session.member">
                         <div class="dropdown login-menu">
-                            <a class="dropdown-toggle" type="button" id="login-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a id="login-menu" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="profile-img" :src="$store.state.session.member.gravatar_url">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
                                 <div class="username dropdown-item"><b>{{ $store.state.session.member.username }}</b><br>Member</div>
                                 <div class="dropdown-divider"></div>
-                                <a href="#" @click.prevent="$modal.show('theseed-setting');" class="dropdown-item">설정</a>
+                                <a href="#" class="dropdown-item" @click.prevent="$modal.show('theseed-setting');">설정</a>
                                 <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
-                                    <a href="#" v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
+                                    <a v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
+                                        href="#" class="dropdown-item"
                                         @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
-                                        class="dropdown-item"
                                     >다크 테마로</a>
-                                    <a href="#" v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
+                                    <a v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
+                                        href="#" class="dropdown-item"
                                         @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: false})"
-                                        class="dropdown-item"
                                     >라이트 테마로</a>
                                 </template>
                                 <div class="dropdown-divider"></div>
@@ -70,21 +70,21 @@
                     </template>
                     <template v-else>
                         <div class="dropdown login-menu">
-                            <a class="dropdown-toggle" type="button" id="login-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a id="login-menu" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="fa fa-user"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
                                 <div class="username dropdown-item"><b>{{ $store.state.session.ip }}</b><br>Please login!</div>
                                 <div class="dropdown-divider"></div>
-                                <a href="#" @click.prevent="$modal.show('theseed-setting');" class="dropdown-item">설정</a>
+                                <a href="#" class="dropdown-item" @click.prevent="$modal.show('theseed-setting');">설정</a>
                                 <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
-                                    <a href="#" v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
+                                    <a v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
+                                        href="#" class="dropdown-item"
                                         @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
-                                        class="dropdown-item"
                                     >다크 테마로</a>
-                                    <a href="#" v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
+                                    <a v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
+                                        href="#" class="dropdown-item"
                                         @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: false})"
-                                        class="dropdown-item"
                                     >라이트 테마로</a>
                                 </template>
                                 <div class="dropdown-divider"></div>
@@ -101,12 +101,12 @@
         </div>
         <div class="content-wrapper">
             <div class="liberty-sidebar">
-                <div class="liberty-right-fixed" v-bind:class="{ 'fixed': $store.state.localConfig['liberty.fixed_sidebar'] === true }">
+                <div class="liberty-right-fixed" :class="{ 'fixed': $store.state.localConfig['liberty.fixed_sidebar'] === true }">
                     <div class="live-recent">
                         <div class="live-recent-header">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="liberty-recent-tab1">최근 변경</a>
+                                    <a id="liberty-recent-tab1" class="nav-link active">최근 변경</a>
                                 </li>
                             </ul>
                         </div>
@@ -118,60 +118,60 @@
                 </div>
             </div>
             <div class="container-fluid liberty-content">
-                <div id="site-notice" class="notification" v-if="$store.state.config['wiki.sitenotice']">
+                <div v-if="$store.state.config['wiki.sitenotice']" id="site-notice" class="notification">
                     <span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
                 </div>
                 <div class="liberty-content-header">
-                    <div class="content-tools" v-if="['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes($store.state.page.viewName) || $store.state.page.data.menus">
+                    <div v-if="viewName || $store.state.page.data.menus" class="content-tools">
                         <div class="btn-group" role="group" aria-label="content-tools">
-                            <template v-if="$store.state.page.viewName === 'wiki' || $store.state.page.viewName === 'notfound'">
+                            <template v-if="viewName === 'wiki' || viewName === 'notfound'">
                                 <nuxt-link v-if="$store.state.page.data.starred"
                                         :to="doc_action_link($store.state.page.data.document, 'member/unstar')" class="btn btn-secondary tools-btn" v-tooltip="`Unstar`">
-                                <span class="fa fa-star"></span>
-                                <span class="star-count">{{ $store.state.page.data.star_count }}</span>
-                            </nuxt-link>
-                            <nuxt-link v-else-if="$store.state.page.data.star_count || $store.state.page.data.star_count === 0"
-                                       :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
-                                <span class="fa fa-star-o"></span>
-                                <span class="star-count">{{ $store.state.page.data.star_count }}</span>
-                            </nuxt-link>
+                                    <span class="fa fa-star"></span>
+                                    <span class="star-count">{{ $store.state.page.data.star_count }}</span>
+                                </nuxt-link>
+                                <nuxt-link v-else-if="$store.state.page.data.star_count || $store.state.page.data.star_count === 0"
+                                        :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
+                                    <span class="fa fa-star-o"></span>
+                                    <span class="star-count">{{ $store.state.page.data.star_count }}</span>
+                                </nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn" v-bind:class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
+                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
                                 <nuxt-link v-if="$store.state.page.data.user"
                                         :to="contribution_author_link($store.state.page.data.document.title)" class="btn btn-secondary tools-btn">기여</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'acl')"  class="btn btn-secondary tools-btn">ACL</nuxt-link>
                             </template>
-                            <template v-else-if="$store.state.page.viewName === 'backlink'">
+                            <template v-else-if="viewName === 'backlink'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
                             </template>
-                            <template v-else-if="$store.state.page.viewName === 'edit' || $store.state.page.viewName === 'edit_edit_request'">
+                            <template v-else-if="viewName === 'edit' || viewName === 'edit_edit_request'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'delete')" class="btn btn-danger tools-btn">삭제</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'move')"  class="btn btn-secondary tools-btn">이동</nuxt-link>
                             </template>
-                            <template v-else-if="$store.state.page.viewName === 'history'">
+                            <template v-else-if="viewName === 'history'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
                             </template>
-                            <template v-else-if="$store.state.page.viewName === 'raw' || $store.state.page.viewName === 'diff'">
+                            <template v-else-if="viewName === 'raw' || viewName === 'diff'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
                             </template>
-                            <template v-else-if="$store.state.page.viewName === 'thread'">
+                            <template v-else-if="viewName === 'thread'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn">토론 목록</nuxt-link>
                             </template>
                             <template v-if="$store.state.page.data.menus">
-                                <nuxt-link v-for="m in $store.state.page.data.menus" v-bind:key="m.to" :to="m.to" class="btn btn-secondary tools-btn" v-text="m.title" />
+                                <nuxt-link v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="btn btn-secondary tools-btn" v-text="m.title" />
                             </template>
                         </div>
                     </div>
                     <div class="title">
                         <h1 v-if="$store.state.page.data.document">
-                            <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span class="namespace" v-if="$store.state.page.data.document.forceShowNamespace === true">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
+                            <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace === true" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
                             <small v-if="$store.state.page.viewName === 'edit_edit_request' || $store.state.page.viewName === 'edit_request'">(편집 요청)</small>
                             <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.section">(r{{$store.state.page.data.body.baserev}} 문단 편집)</small>
                             <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.baserev === '0'">(새 문서 생성)</small>
@@ -195,7 +195,7 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" class="alert alert-info fade in" id="userDiscussAlert" role="alert">
+                    <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" id="userDiscussAlert" class="alert alert-info fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
                             <span aria-hidden="true">&times;</span>
                             <span class="sr-only">Close</span>
@@ -886,8 +886,8 @@ Public License instead of this License.  But first, please read
                         </pre>
                     </div>
                 </div>
-                <div class="liberty-footer" id="bottom">
-                    <ul class="footer-info" v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.date">
+                <div id="bottom" class="liberty-footer">
+                    <ul v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.date" class="footer-info">
                         <li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" />에 마지막으로 편집되었습니다.</li>
                         <li class="footer-info-copyright" v-html="$store.state.config['wiki.copyright_text']" />
                     </ul>
@@ -902,8 +902,8 @@ Public License instead of this License.  But first, please read
         </div>
         <div class="scroll-buttons">
             <nuxt-link class="scroll-toc" to="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link class="scroll-button" to="#top" id="left"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link class="scroll-bottom" to="#bottom" id="right"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
+            <nuxt-link id="left" class="scroll-button" to="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
+            <nuxt-link id="right" class="scroll-bottom" to="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
         </div>
         <setting>
             <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
@@ -933,7 +933,7 @@ import SearchForm from './components/searchForm';
 if (process.browser) {
     try {
         require("./js/jquery-2.2.4.min.js");
-        //require("./js/tether.min.js");
+        // require("./js/tether.min.js");
         require('./bootstrap/js/bootstrap.min.js');
 
     } catch(e) {}
@@ -958,6 +958,9 @@ export default {
                 '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
                 '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
             };
+        },
+        viewName() {
+            return ['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes($store.state.page.viewName) ? $store.state.page.viewName : false;
         }
     }
 }
