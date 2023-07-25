@@ -37,64 +37,48 @@
                     </li>
                 </ul>
                 <div class="navbar-login">
-                    <template v-if="$store.state.session.member">
-                        <div class="dropdown login-menu">
-                            <a id="login-menu" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img class="profile-img" :src="$store.state.session.member.gravatar_url">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
-                                <div class="username dropdown-item"><b>{{ $store.state.session.member.username }}</b><br>Member</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item" @click.prevent="$modal.show('theseed-setting');">설정</a>
-                                <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
-                                    <a v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
-                                        href="#" class="dropdown-item"
-                                        @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
-                                    >다크 테마로</a>
-                                    <a v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
-                                        href="#" class="dropdown-item"
-                                        @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: false})"
-                                    >라이트 테마로</a>
-                                </template>
-                                <div class="dropdown-divider"></div>
+                    <div class="dropdown login-menu">
+                        <a id="login-menu" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img v-if="$store.state.session.member" class="profile-img" :src="$store.state.session.member.gravatar_url">
+                            <span v-else class="fa fa-user"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
+                            <div v-if="$store.state.session.member" class="username dropdown-item">
+                                <b>{{ $store.state.session.member.username }}</b><br>Member
+                            </div>
+                            <div v-else class="username dropdown-item">
+                                <b>{{ $store.state.session.ip }}</b><br>Please login!
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" @click.prevent="$modal.show('theseed-setting');">설정</a>
+                            <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
+                                <a v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
+                                    href="#" class="dropdown-item"
+                                    @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
+                                >다크 테마로</a>
+                                <a v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
+                                    href="#" class="dropdown-item"
+                                    @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: false})"
+                                >라이트 테마로</a>
+                            </template>
+                            <div class="dropdown-divider"></div>
+                            <template v-if="$store.state.session.member">
                                 <nuxt-link to="/member/mypage" class="dropdown-item">내 정보</nuxt-link>
                                 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'w')" class="dropdown-item">내 사용자 문서</nuxt-link>
                                 <nuxt-link to="/member/starred_documents" class="dropdown-item">내 문서함</nuxt-link>
                                 <div class="dropdown-divider"></div>
                                 <nuxt-link class="dropdown-item" :to="contribution_author_link($store.state.session.member.username)">내 문서 기여 목록</nuxt-link>
                                 <nuxt-link class="dropdown-item" :to="contribution_author_link_discuss($store.state.session.member.username)">내 토론 기여 목록</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item">로그아웃</nuxt-link>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="dropdown login-menu">
-                            <a id="login-menu" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="fa fa-user"></span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right login-dropdown-menu" aria-labelledby="login-menu">
-                                <div class="username dropdown-item"><b>{{ $store.state.session.ip }}</b><br>Please login!</div>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item" @click.prevent="$modal.show('theseed-setting');">설정</a>
-                                <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
-                                    <a v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
-                                        href="#" class="dropdown-item"
-                                        @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
-                                    >다크 테마로</a>
-                                    <a v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
-                                        href="#" class="dropdown-item"
-                                        @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: false})"
-                                    >라이트 테마로</a>
-                                </template>
-                                <div class="dropdown-divider"></div>
+                            </template>
+                            <template v-else>
                                 <nuxt-link class="dropdown-item" :to="contribution_ip_link($store.state.session.ip)">내 문서 기여 목록</nuxt-link>
                                 <nuxt-link class="dropdown-item" :to="contribution_ip_link_discuss($store.state.session.ip)">내 토론 기여 목록</nuxt-link>
-                                <div class="dropdown-divider"></div>
-                                <nuxt-link :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item">로그인</nuxt-link>
-                            </div>
+                            </template>
+                            <div class="dropdown-divider"></div>
+                            <nuxt-link v-if="$store.state.session.member" :to="{path:'/member/logout',query:{redirect:$route.path}}" class="dropdown-item">로그아웃</nuxt-link>
+                            <nuxt-link v-else :to="{path:'/member/login',query:{redirect:$route.path}}" class="dropdown-item">로그인</nuxt-link>
                         </div>
-                    </template>
+                    </div>
                 </div>
                 <search-form />
             </nav>
@@ -171,7 +155,7 @@
                     </div>
                     <div class="title">
                         <h1 v-if="$store.state.page.data.document">
-                            <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace === true" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
+                            <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace !== false" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
                             <small v-if="$store.state.page.viewName === 'edit_edit_request' || $store.state.page.viewName === 'edit_request'">(편집 요청)</small>
                             <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.section">(r{{$store.state.page.data.body.baserev}} 문단 편집)</small>
                             <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.baserev === '0'">(새 문서 생성)</small>
@@ -960,7 +944,7 @@ export default {
             };
         },
         viewName() {
-            return ['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes($store.state.page.viewName) ? $store.state.page.viewName : false;
+            return ['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes(this.$store.state.page.viewName) ? this.$store.state.page.viewName : false;
         }
     }
 }
