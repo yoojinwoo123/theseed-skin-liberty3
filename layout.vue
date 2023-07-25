@@ -106,7 +106,7 @@
                     <span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
                 </div>
                 <div class="liberty-content-header">
-                    <div v-if="viewName || $store.state.page.data.menus" class="content-tools">
+                    <div v-if="viewName || $store.state.page.data.menus.length" class="content-tools">
                         <div class="btn-group" role="group" aria-label="content-tools">
                             <template v-if="viewName === 'wiki' || viewName === 'notfound'">
                                 <nuxt-link v-if="$store.state.page.data.starred"
@@ -148,7 +148,7 @@
                             <template v-else-if="viewName === 'thread'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn">토론 목록</nuxt-link>
                             </template>
-                            <template v-if="$store.state.page.data.menus">
+                            <template v-if="$store.state.page.data.menus.length">
                                 <nuxt-link v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="btn btn-secondary tools-btn" v-text="m.title" />
                             </template>
                         </div>
