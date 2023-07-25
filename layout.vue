@@ -75,8 +75,8 @@
                                 <nuxt-link class="dropdown-item" :to="contribution_ip_link_discuss($store.state.session.ip)">내 토론 기여 목록</nuxt-link>
                             </template>
                             <div class="dropdown-divider"></div>
-                            <nuxt-link v-if="$store.state.session.member" :to="{path:'/member/logout',query:{redirect:$route.path}}" class="dropdown-item">로그아웃</nuxt-link>
-                            <nuxt-link v-else :to="{path:'/member/login',query:{redirect:$route.path}}" class="dropdown-item">로그인</nuxt-link>
+                            <nuxt-link v-if="$store.state.session.member" :to="{path:'/member/logout',query:{redirect:$route.fullPath}}" class="dropdown-item">로그아웃</nuxt-link>
+                            <nuxt-link v-else :to="{path:'/member/login',query:{redirect:$route.fullPath}}" class="dropdown-item">로그인</nuxt-link>
                         </div>
                     </div>
                 </div>
