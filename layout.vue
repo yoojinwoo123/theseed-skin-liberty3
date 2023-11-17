@@ -180,7 +180,7 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="showEditMessage" v-html="$store.state.page.data.edit_acl_message" class="alert alert-danger" role="alert"></div>
+                    <div v-if="$store.state.page.data.edit_acl_message && showEditMessage" v-html="$store.state.page.data.edit_acl_message" class="alert alert-danger" role="alert"></div>
                     <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" id="userDiscussAlert" class="alert alert-info fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
                             <span aria-hidden="true">&times;</span>
@@ -939,8 +939,7 @@ export default {
         onClickEditBtn() {
             if (this.showEditMessage)
                 this.$router.push(this.doc_action_link($store.state.page.data.document, 'edit'));
-            else
-                this.showEditMessage = true;
+            this.showEditMessage = !this.showEditMessage;
         }
     },
     computed: {
