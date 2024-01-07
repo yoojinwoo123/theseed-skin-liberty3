@@ -884,9 +884,9 @@ Public License instead of this License.  But first, please read
             </div>
         </div>
         <div class="scroll-buttons">
-            <nuxt-link class="scroll-toc" to="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link id="left" class="scroll-button" to="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link id="right" class="scroll-bottom" to="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
+            <a class="scroll-toc" href="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
+            <a id="left" class="scroll-button" href="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+            <a id="right" class="scroll-bottom" href="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
         </div>
         <setting>
             <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
