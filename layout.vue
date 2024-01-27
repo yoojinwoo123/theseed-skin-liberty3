@@ -942,6 +942,11 @@ export default {
             this.showEditMessage = !this.showEditMessage;
         }
     },
+    watch: {
+        $route(to, from) {
+            this.showEditMessage = false;
+        }
+    }
     computed: {
         skinConfig() {
             return {
