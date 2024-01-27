@@ -121,7 +121,8 @@
                                 </nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
+                                <nuxt-link v-if="$store.state.page.data.editable" :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
+                                <a v-else href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
                                 <nuxt-link v-if="$store.state.page.data.user"
                                         :to="contribution_author_link($store.state.page.data.document.title)" class="btn btn-secondary tools-btn">기여</nuxt-link>
@@ -154,7 +155,7 @@
                         </div>
                     </div>
                     <div class="title">
-                        <h1 v-if="$store.state.page.data.document">
+                        <h1 v-if="$store.state.page.data.document && $store.state.page.viewName !== 'error'">
                             <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace !== false" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
                             <small v-if="$store.state.page.viewName === 'edit_edit_request' || $store.state.page.viewName === 'edit_request'">(편집 요청)</small>
                             <small v-else-if="$store.state.page.viewName === 'edit' && $store.state.page.data.body.section">(r{{$store.state.page.data.body.baserev}} 문단 편집)</small>
@@ -179,6 +180,7 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
+                    <div v-if="$store.state.page.data.edit_acl_message && showEditMessage" v-html="$store.state.page.data.edit_acl_message" class="alert alert-danger" role="alert"></div>
                     <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" id="userDiscussAlert" class="alert alert-info fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
                             <span aria-hidden="true">&times;</span>
@@ -882,9 +884,9 @@ Public License instead of this License.  But first, please read
             </div>
         </div>
         <div class="scroll-buttons">
-            <nuxt-link class="scroll-toc" to="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link id="left" class="scroll-button" to="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
-            <nuxt-link id="right" class="scroll-bottom" to="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
+            <a class="scroll-toc" href="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
+            <a id="left" class="scroll-button" href="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+            <a id="right" class="scroll-bottom" href="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
         </div>
         <setting>
             <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
@@ -927,6 +929,18 @@ export default {
         LocalDate,
         RecentCard,
         SearchForm
+    },
+    data(){
+        return {
+            showEditMessage: false
+        }
+    },
+    methods: {
+        onClickEditBtn() {
+            if (this.showEditMessage)
+                this.$router.push(this.doc_action_link($store.state.page.data.document, 'edit'));
+            this.showEditMessage = !this.showEditMessage;
+        }
     },
     computed: {
         skinConfig() {
