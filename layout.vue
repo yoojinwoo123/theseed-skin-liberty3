@@ -938,7 +938,7 @@ export default {
     methods: {
         onClickEditBtn() {
             if (this.showEditMessage)
-                this.$router.push(this.doc_action_link($store.state.page.data.document, 'edit'));
+                this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
             this.showEditMessage = !this.showEditMessage;
         }
     },
