@@ -955,7 +955,7 @@ export default {
         $route(to, from) {
             this.showEditMessage = false;
         }
-    }
+    },
     computed: {
         skinConfig() {
             return {
