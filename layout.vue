@@ -121,8 +121,9 @@
                                 </nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
-                                <nuxt-link v-if="$store.state.page.data.editable" :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
-                                <a v-else href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
+                                <a v-if="requestable" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-pencil-square"></span> 편집 요청</a>
+                                <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
+                                <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
                                 <nuxt-link v-if="$store.state.page.data.user"
                                         :to="contribution_author_link($store.state.page.data.document.title)" class="btn btn-secondary tools-btn">기여</nuxt-link>
@@ -180,7 +181,10 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.page.data.edit_acl_message && showEditMessage" v-html="$store.state.page.data.edit_acl_message" class="alert alert-danger" role="alert"></div>
+                    <div v-if="$store.state.page.data.edit_acl_message && showEditMessage" class="alert alert-danger" role="alert">
+                        <template v-html="$store.state.page.data.edit_acl_message"></template>
+                        <template v-if="requestable">대신 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'new_edit_request')">편집 요청</nuxt-link>을 생성할 수 있습니다.</template>
+                    </div>
                     <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" id="userDiscussAlert" class="alert alert-info fade in" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
                             <span aria-hidden="true">&times;</span>
@@ -937,11 +941,21 @@ export default {
     },
     methods: {
         onClickEditBtn() {
-            if (this.showEditMessage)
-                this.$router.push(this.doc_action_link($store.state.page.data.document, 'edit'));
+            if (this.showEditMessage) {
+                if (this.requestable)
+                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'new_edit_request'));
+                else
+                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
+            }
+
             this.showEditMessage = !this.showEditMessage;
         }
     },
+    watch: {
+        $route(to, from) {
+            this.showEditMessage = false;
+        }
+    }
     computed: {
         skinConfig() {
             return {
@@ -956,6 +970,9 @@ export default {
         },
         viewName() {
             return ['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes(this.$store.state.page.viewName) ? this.$store.state.page.viewName : false;
+        },
+        requestable() {
+            return this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message;
         }
     }
 }
