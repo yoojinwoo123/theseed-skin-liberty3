@@ -15,7 +15,7 @@
                         <nuxt-link class="nav-link" to="/random"><span class="fa fa-random"></span><span class="hide-title">임의 문서</span></nuxt-link>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle dropdown-toggle-fix" href="#" data-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle dropdown-toggle-fix" href="#" data-toggle="dropdown" aria-expanded="false" @click.prevent>
                             <span class="fa fa-gear"></span><span class="hide-title">도구</span>
                         </a>
                         <div class="dropdown-menu" role="menu">
@@ -888,9 +888,9 @@ Public License instead of this License.  But first, please read
             </div>
         </div>
         <div class="scroll-buttons">
-            <a class="scroll-toc" href="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
-            <a id="left" class="scroll-button" href="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
-            <a id="right" class="scroll-bottom" href="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+            <nuxt-link class="scroll-toc" to="#toc"><i class="fa fa-list-alt" aria-hidden="true"></i></nuxt-link>
+            <nuxt-link id="left" class="scroll-button" to="#top"><i class="fa fa-arrow-up" aria-hidden="true"></i></nuxt-link>
+            <nuxt-link id="right" class="scroll-bottom" to="#bottom"><i class="fa fa-arrow-down" aria-hidden="true"></i></nuxt-link>
         </div>
         <setting>
             <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
