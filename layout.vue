@@ -144,6 +144,7 @@
                         </button>
                         현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
                     </div>
+                    <diff-selector />
                     <nuxt />
                     <div v-if="$store.state.page.viewName === 'license'">
                         <h2>Liberty skin license</h2>
@@ -869,6 +870,7 @@ import LocalDate from '~/components/localDate';
 import RecentCard from './components/recentCard';
 import SearchForm from './components/searchForm';
 import ContentTool from './components/contentTool';
+import DiffSelector from './components/diffSelector';
 
 if (process.browser) {
     try {
@@ -886,7 +888,8 @@ export default {
         LocalDate,
         RecentCard,
         SearchForm,
-        ContentTool
+        ContentTool,
+        DiffSelector
     },
     data(){
         return {

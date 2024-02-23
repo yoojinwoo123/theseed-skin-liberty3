@@ -1,0 +1,51 @@
+<template>
+    <div v-if="this.$route.query.rev && $store.state.page.viewName === 'diff'">
+        <ul class="pagination pagination-sm">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                <a class="page-link" href="#" @click.prevent="prevPage"><span class="ion-ios-arrow-back"></span> Prev</a>
+            </li>
+            <li v-for="n in count" :key="rev - n - currentPage * 10" class="page-item">
+                <nuxt-link :to="doc_action_link(this.$store.state.page.data.document, 'diff', { rev, oldrev: rev - n - currentPage * 10 })" class="page-link">{{ rev - n - currentPage * 10 }}</nuxt-link>
+            </li>
+            <li class="page-item" :class="{ disabled: currentPage === pageCount }">
+                <a class="page-link" href="#" @click.prevent="nextPage">Next <span class="ion-ios-arrow-forward"></span></a>
+            </li>
+        </ul>
+    </div>
+</template>
+  
+<script>
+import Common from '~/mixins/common';
+
+export default {
+    mixins: [Common],
+    data() {
+        return {
+            currentPage: 0,
+        };
+    },
+    methods: {
+        prevPage() {
+            if (this.currentPage > 1) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.pageCount) {
+                this.currentPage++;
+            }
+        },
+    },
+    computed: {
+        rev() {
+            return this.$route.query.rev;
+        },
+        pageCount() {
+            return Math.floor(this.rev / 10);
+        },
+        count() {
+            return this.currentPage === this.pageCount ? this.rev % 10 - 1 : 10;
+        }
+    },
+};
+</script>
