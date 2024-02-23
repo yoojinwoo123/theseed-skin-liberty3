@@ -17,6 +17,8 @@
 <style scoped>
 .pagination {
     margin-top: 0;
+    justify-content: center;
+    display: flex;
 }
 </style>
 
