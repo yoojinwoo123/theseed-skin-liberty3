@@ -22,7 +22,7 @@
             <nuxt-link v-if="toolList.includes('acl')" :to="doc_action_link($store.state.page.data.document, 'acl')" class="btn btn-secondary tools-btn">ACL</nuxt-link>
             <nuxt-link v-if="toolList.includes('delete')" :to="doc_action_link($store.state.page.data.document, 'delete')" class="btn btn-danger tools-btn">삭제</nuxt-link>
             <nuxt-link v-if="toolList.includes('move')" :to="doc_action_link($store.state.page.data.document, 'move')"  class="btn btn-secondary tools-btn">이동</nuxt-link>
-            <template v-if="true">
+            <template v-if="toolList.includes('contribution') || toolList.includes('raw') || toolList.includes('blame') || toolList.includes('diff') || toolList.includes('revert') || toolList.includes('menu')">
                 <button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                 <div class="dropdown-menu dropdown-menu-right" role="menu">
                     <nuxt-link v-if="toolList.includes('contribution')" :to="contribution_author_link($store.state.page.data.document.title)" class="dropdown-item">기여 내역</nuxt-link>
