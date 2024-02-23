@@ -13,7 +13,13 @@
         </ul>
     </div>
 </template>
-  
+
+<style scoped>
+.pagination {
+    margin-top: 0;
+}
+</style>
+
 <script>
 import Common from '~/mixins/common';
 
