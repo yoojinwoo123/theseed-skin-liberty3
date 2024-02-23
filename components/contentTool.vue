@@ -42,6 +42,24 @@ import Common from '~/mixins/common';
 
 export default {
     mixins: [Common],
+    methods: {
+        onClickEditBtn() {
+            if (this.$store.state.localConfig['liberty.showEditMessage']) {
+                if (this.requestable)
+                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'new_edit_request'));
+                else
+                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
+            }
+            else {
+                this.$store.commit('localConfigSetValue', {key: 'liberty.showEditMessage', value: true});
+            }
+        }
+    },
+    watch: {
+        $route(to, from) {
+            this.$store.commit('localConfigSetValue', {key: 'liberty.showEditMessage', value: false});
+        }
+    },
     computed: {
         toolList() {
             const tools = [];
