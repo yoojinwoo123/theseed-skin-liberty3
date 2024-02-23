@@ -133,7 +133,7 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.page.data.edit_acl_message && showEditMessage" class="alert alert-danger" role="alert">
+                    <div v-if="$store.state.page.data.edit_acl_message && $store.state.localConfig['liberty.showEditMessage']" class="alert alert-danger" role="alert">
                         <span v-html="$store.state.page.data.edit_acl_message" @click="onDynamicContentClick($event)"></span>
                         <span v-if="requestable">대신 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'new_edit_request')">편집 요청</nuxt-link>을 생성할 수 있습니다.</span>
                     </div>
