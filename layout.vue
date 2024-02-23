@@ -891,28 +891,6 @@ export default {
         ContentTool,
         DiffSelector
     },
-    data(){
-        return {
-            showEditMessage: false
-        }
-    },
-    methods: {
-        onClickEditBtn() {
-            if (this.showEditMessage) {
-                if (this.requestable)
-                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'new_edit_request'));
-                else
-                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
-            }
-
-            this.showEditMessage = !this.showEditMessage;
-        }
-    },
-    watch: {
-        $route(to, from) {
-            this.showEditMessage = false;
-        }
-    },
     computed: {
         skinConfig() {
             return {
