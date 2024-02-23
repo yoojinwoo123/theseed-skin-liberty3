@@ -1,7 +1,7 @@
 <template>
     <div v-if="this.$route.query.rev && $store.state.page.viewName === 'diff'">
         <ul class="pagination pagination-sm">
-            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <li class="page-item" :class="{ disabled: currentPage === 0 }">
                 <a class="page-link" href="#" @click.prevent="prevPage"><span class="ion-ios-arrow-back"></span> Prev</a>
             </li>
             <li v-for="n in count" :key="rev - n - currentPage * 10" class="page-item">
