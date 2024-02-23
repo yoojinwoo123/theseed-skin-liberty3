@@ -125,8 +125,6 @@
                                 <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
                                 <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
-                                <nuxt-link v-if="$store.state.page.data.user"
-                                        :to="contribution_author_link($store.state.page.data.document.title)" class="btn btn-secondary tools-btn">기여</nuxt-link>
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'acl')"  class="btn btn-secondary tools-btn">ACL</nuxt-link>
                             </template>
                             <template v-else-if="viewName === 'backlink'">
@@ -150,8 +148,27 @@
                             <template v-else-if="viewName === 'thread'">
                                 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn">토론 목록</nuxt-link>
                             </template>
-                            <template v-if="$store.state.page.data.menus && $store.state.page.data.menus.length">
-                                <nuxt-link v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="btn btn-secondary tools-btn" v-text="m.title" />
+                            <template v-if="$store.state.page.viewName === 'wiki' || ($store.state.page.data.menus && $store.state.page.data.menus.length) || $store.state.page.data.user">
+                                <button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                    <nuxt-link v-if="$store.state.page.data.user" :to="contribution_author_link($store.state.page.data.document.title)" class="dropdown-item">기여 내역</nuxt-link>
+                                    <template v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.rev">
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'raw', { rev: $store.state.page.data.rev })" class="dropdown-item">RAW</nuxt-link>
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'blame', { rev: $store.state.page.data.rev })" class="dropdown-item">Blame</nuxt-link>
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'diff', { rev: $store.state.page.data.rev, oldrev: $store.state.page.data.rev - 1 })" class="dropdown-item">이전 리버전과 비교</nuxt-link>
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'revert', { rev: $store.state.page.data.rev })" class="dropdown-item">이 리버전으로 되돌리기</nuxt-link>
+                                    </template>
+                                    <template v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.rev === null">
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'raw')" class="dropdown-item">RAW</nuxt-link>
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'blame')" class="dropdown-item">Blame</nuxt-link>
+                                        <nuxt-link :to="doc_action_link($store.state.page.data.document, 'diff')" class="dropdown-item">이전 리버전과 비교</nuxt-link>
+                                    </template>
+                                    <template v-if="$store.state.page.data.menus && $store.state.page.data.menus.length">
+                                        <nuxt-link v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="dropdown-item" v-text="m.title" />
+                                    </template>
+                                </div>
                             </template>
                         </div>
                     </div>
