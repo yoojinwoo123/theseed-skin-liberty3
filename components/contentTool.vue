@@ -45,7 +45,7 @@ export default {
     methods: {
         onClickEditBtn() {
             if (this.$store.state.localConfig['liberty.showEditMessage']) {
-                if (this.requestable)
+                if (this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message)
                     this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'new_edit_request'));
                 else
                     this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
