@@ -1,11 +1,11 @@
 <template>
-    <div v-if="$route.query.rev && $store.state.page.viewName === 'diff'">
+    <div v-if="($store.state.page.data.rev || $route.query.rev) && ($store.state.page.viewName === 'diff' || $store.state.page.viewName === 'blame')">
         <ul class="pagination pagination-sm">
             <li class="page-item" :class="{ disabled: currentPage === 0 }">
                 <a class="page-link" href="#" @click.prevent="prevPage"><span class="ion-ios-arrow-back"></span> Prev</a>
             </li>
             <li v-for="n in count" :key="rev - n - currentPage * 10" class="page-item">
-                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'diff', { rev, oldrev: rev - n - currentPage * 10 })" class="page-link">{{ rev - n - currentPage * 10 }}</nuxt-link>
+                <nuxt-link :to="generateItemLink(n)" class="page-link">{{ rev - n - currentPage * 10 }}</nuxt-link>
             </li>
             <li class="page-item" :class="{ disabled: currentPage === pageCount }">
                 <a class="page-link" href="#" @click.prevent="nextPage">Next <span class="ion-ios-arrow-forward"></span></a>
@@ -20,6 +20,11 @@
     justify-content: center;
     display: flex;
 }
+
+.theseed-dark-mode .pagination .page-item .page-link {
+    background-color: #27292d;
+    border-color: #383b40;
+}
 </style>
 
 <script>
@@ -30,7 +35,7 @@ export default {
     data() {
         return {
             currentPage: 0,
-        };
+        }
     },
     methods: {
         prevPage() {
@@ -43,10 +48,18 @@ export default {
                 this.currentPage++;
             }
         },
+        generateItemLink(n) {
+            if (this.$store.state.page.viewName === 'diff') {
+                return this.doc_action_link(this.$store.state.page.data.document, 'diff', { rev: this.rev, oldrev: this.rev - n - this.currentPage * 10 })
+            }
+            else if (this.$store.state.page.viewName === 'blame') {
+                return this.doc_action_link(this.$store.state.page.data.document, 'blame', { rev: this.rev - n - this.currentPage * 10 })
+            }
+        }
     },
     computed: {
         rev() {
-            return this.$route.query.rev;
+            return this.$store.state.page.data.rev || this.$route.query.rev;
         },
         pageCount() {
             return Math.floor(this.rev / 10);
