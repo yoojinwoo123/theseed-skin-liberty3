@@ -106,55 +106,7 @@
                     <span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
                 </div>
                 <div class="liberty-content-header">
-                    <div v-if="viewName || ($store.state.page.data.menus && $store.state.page.data.menus.length)" class="content-tools">
-                        <div class="btn-group" role="group" aria-label="content-tools">
-                            <template v-if="viewName === 'wiki' || viewName === 'notfound'">
-                                <nuxt-link v-if="$store.state.page.data.starred"
-                                        :to="doc_action_link($store.state.page.data.document, 'member/unstar')" class="btn btn-secondary tools-btn" v-tooltip="`Unstar`">
-                                    <span class="fa fa-star"></span>
-                                    <span class="star-count">{{ $store.state.page.data.star_count }}</span>
-                                </nuxt-link>
-                                <nuxt-link v-else-if="$store.state.page.data.star_count || $store.state.page.data.star_count === 0"
-                                        :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
-                                    <span class="fa fa-star-o"></span>
-                                    <span class="star-count">{{ $store.state.page.data.star_count }}</span>
-                                </nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
-                                <a v-if="requestable" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-pencil-square"></span> 편집 요청</a>
-                                <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
-                                <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
-                                <nuxt-link v-if="$store.state.page.data.user"
-                                        :to="contribution_author_link($store.state.page.data.document.title)" class="btn btn-secondary tools-btn">기여</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'acl')"  class="btn btn-secondary tools-btn">ACL</nuxt-link>
-                            </template>
-                            <template v-else-if="viewName === 'backlink'">
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
-                            </template>
-                            <template v-else-if="viewName === 'edit' || viewName === 'edit_edit_request'">
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'delete')" class="btn btn-danger tools-btn">삭제</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'move')"  class="btn btn-secondary tools-btn">이동</nuxt-link>
-                            </template>
-                            <template v-else-if="viewName === 'history'">
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
-                            </template>
-                            <template v-else-if="viewName === 'raw' || viewName === 'diff'">
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'history')"  class="btn btn-secondary tools-btn">역사</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
-                            </template>
-                            <template v-else-if="viewName === 'thread'">
-                                <nuxt-link :to="doc_action_link($store.state.page.data.document, 'discuss')"  class="btn btn-secondary tools-btn">토론 목록</nuxt-link>
-                            </template>
-                            <template v-if="$store.state.page.data.menus && $store.state.page.data.menus.length">
-                                <nuxt-link v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="btn btn-secondary tools-btn" v-text="m.title" />
-                            </template>
-                        </div>
-                    </div>
+                    <content-tool />
                     <div class="title">
                         <h1 v-if="$store.state.page.data.document && $store.state.page.viewName !== 'error'">
                             <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace !== false" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
@@ -181,7 +133,7 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.page.data.edit_acl_message && showEditMessage" class="alert alert-danger" role="alert">
+                    <div v-if="$store.state.page.data.edit_acl_message && $store.state.localConfig['liberty.showEditMessage']" class="alert alert-danger" role="alert">
                         <span v-html="$store.state.page.data.edit_acl_message" @click="onDynamicContentClick($event)"></span>
                         <span v-if="requestable">대신 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'new_edit_request')">편집 요청</nuxt-link>을 생성할 수 있습니다.</span>
                     </div>
@@ -192,6 +144,7 @@
                         </button>
                         현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
                     </div>
+                    <rev-selector />
                     <nuxt />
                     <div v-if="$store.state.page.viewName === 'license'">
                         <h2>Liberty skin license</h2>
@@ -916,6 +869,8 @@ import SettingItemCheckbox from '~/components/settingItemCheckbox';
 import LocalDate from '~/components/localDate';
 import RecentCard from './components/recentCard';
 import SearchForm from './components/searchForm';
+import ContentTool from './components/contentTool';
+import RevSelector from './components/revSelector';
 
 if (process.browser) {
     try {
@@ -932,29 +887,9 @@ export default {
         SettingItemCheckbox,
         LocalDate,
         RecentCard,
-        SearchForm
-    },
-    data(){
-        return {
-            showEditMessage: false
-        }
-    },
-    methods: {
-        onClickEditBtn() {
-            if (this.showEditMessage) {
-                if (this.requestable)
-                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'new_edit_request'));
-                else
-                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
-            }
-
-            this.showEditMessage = !this.showEditMessage;
-        }
-    },
-    watch: {
-        $route(to, from) {
-            this.showEditMessage = false;
-        }
+        SearchForm,
+        ContentTool,
+        RevSelector
     },
     computed: {
         skinConfig() {
@@ -967,9 +902,6 @@ export default {
                 '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
                 '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
             };
-        },
-        viewName() {
-            return ['wiki', 'notfound', 'backlink', 'edit', 'edit_edit_request', 'history', 'raw', 'diff', 'thread'].includes(this.$store.state.page.viewName) ? this.$store.state.page.viewName : false;
         },
         requestable() {
             return this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message;
