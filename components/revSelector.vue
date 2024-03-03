@@ -5,8 +5,8 @@
                 <a class="page-link" href="#" @click.prevent="prevPage"><span class="ion-ios-arrow-back"></span> Prev</a>
             </li>
             <li v-for="n in itemList" :key="n" class="page-item">
-                <nuxt-link v-if="$store.state.page.viewName === 'diff'" :to="doc_action_link(document, 'diff', { rev, oldrev: n })" class="page-link">{{ n }}</nuxt-link>
-                <nuxt-link v-if="$store.state.page.viewName === 'blame'" :to="doc_action_link(document, 'blame', { rev: n })" class="page-link">{{ n }}</nuxt-link>
+                <nuxt-link v-if="$store.state.page.viewName === 'diff'" :to="doc_action_link($store.state.page.data.document, 'diff', { rev, oldrev: n })" class="page-link">{{ n }}</nuxt-link>
+                <nuxt-link v-if="$store.state.page.viewName === 'blame'" :to="doc_action_link($store.state.page.data.document, 'blame', { rev: n })" class="page-link">{{ n }}</nuxt-link>
             </li>
             <li class="page-item" :class="{ disabled: currentPage === pageCount }">
                 <a class="page-link" href="#" @click.prevent="nextPage">Next <span class="ion-ios-arrow-forward"></span></a>
@@ -51,14 +51,11 @@ export default {
         }
     },
     watch: {
-        document() {
+        $route() {
             this.currentPage = 0;
         }
     },
     computed: {
-        document() {
-            return this.$store.state.page.data.document;
-        },
         itemLength() {
             return window.innerWidth < 610 ? 5 : 10;
         },
