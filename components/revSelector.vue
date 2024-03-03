@@ -57,6 +57,11 @@ export default {
             }
         }
     },
+    watch: {
+        $route(to, from) {
+            this.currentPage = 0;
+        }
+    },
     computed: {
         rev() {
             return this.$store.state.page.data.rev || this.$route.query.rev;
