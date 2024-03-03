@@ -57,7 +57,7 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
+        $route() {
             this.$store.commit('localConfigSetValue', {key: 'liberty.showEditMessage', value: false});
         }
     },

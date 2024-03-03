@@ -4,8 +4,9 @@
             <li class="page-item" :class="{ disabled: currentPage === 0 }">
                 <a class="page-link" href="#" @click.prevent="prevPage"><span class="ion-ios-arrow-back"></span> Prev</a>
             </li>
-            <li v-for="n in count" :key="rev - n - currentPage * itemLength" class="page-item">
-                <nuxt-link :to="generateItemLink(n)" class="page-link">{{ rev - n - currentPage * itemLength }}</nuxt-link>
+            <li v-for="n in itemList" :key="n" class="page-item">
+                <nuxt-link v-if="$store.state.page.viewName === 'diff'" :to="doc_action_link(document, 'diff', { rev, oldrev: n })" class="page-link">{{ n }}</nuxt-link>
+                <nuxt-link v-if="$store.state.page.viewName === 'blame'" :to="doc_action_link(document, 'blame', { rev: n })" class="page-link">{{ n }}</nuxt-link>
             </li>
             <li class="page-item" :class="{ disabled: currentPage === pageCount }">
                 <a class="page-link" href="#" @click.prevent="nextPage">Next <span class="ion-ios-arrow-forward"></span></a>
@@ -47,22 +48,17 @@ export default {
             if (this.currentPage < this.pageCount) {
                 this.currentPage++;
             }
-        },
-        generateItemLink(n) {
-            if (this.$store.state.page.viewName === 'diff') {
-                return this.doc_action_link(this.$store.state.page.data.document, 'diff', { rev: this.rev, oldrev: this.rev - n - this.currentPage * this.itemLength })
-            }
-            else if (this.$store.state.page.viewName === 'blame') {
-                return this.doc_action_link(this.$store.state.page.data.document, 'blame', { rev: this.rev - n - this.currentPage * this.itemLength })
-            }
         }
     },
     watch: {
-        $route(to, from) {
+        document() {
             this.currentPage = 0;
         }
     },
     computed: {
+        document() {
+            return this.$store.state.page.data.document;
+        },
         itemLength() {
             return window.innerWidth < 610 ? 5 : 10;
         },
@@ -70,10 +66,14 @@ export default {
             return this.$store.state.page.data.rev || this.$route.query.rev;
         },
         pageCount() {
-            return Math.floor(this.rev / this.itemLength);
+            return Math.ceil(this.rev / this.itemLength) - 1;
         },
-        count() {
-            return this.currentPage === this.pageCount ? this.rev % this.itemLength - 1 : this.itemLength;
+        itemList() {
+            const items = [];
+            for (let i = this.rev - 1 - this.currentPage * this.itemLength; i > 0 && items.length < this.itemLength; i--){
+                items.push(i);
+            }
+            return items;
         }
     },
 };
