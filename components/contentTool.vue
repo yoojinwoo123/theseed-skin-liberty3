@@ -63,14 +63,15 @@ export default {
     },
     computed: {
         rev() {
-            return this.$store.state.page.data.rev || this.$route.query.rev;
+            return this.$store.state.localConfig['liberty.rev_convenience'] !== false && (this.$store.state.page.data.rev || this.$route.query.rev);
         },
         toolList() {
             const tools = [];
             switch (this.$store.state.page.viewName) {
                 case 'wiki':
                 case 'notfound':
-                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl', 'raw', 'blame');
+                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl');
+                    if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('raw', 'blame');
                     if (this.$store.state.page.data.user) tools.push('contribution');
                     if (this.rev) tools.push('revert', 'diff');
                     break;
@@ -87,7 +88,8 @@ export default {
                 case 'raw':
                 case 'diff':
                 case 'blame':
-                    tools.push('history', 'edit', 'wiki');
+                    tools.push('history', 'edit');
+                    if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('wiki');
                     break;
                 case 'thread':
                     tools.push('discuss');
