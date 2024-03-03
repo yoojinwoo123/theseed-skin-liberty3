@@ -2,7 +2,7 @@
     <form id="searchform" class="form-inline" v-on:submit.prevent>
         <div class="input-group">
             <div class="input-search">
-                <input type="search" name="q" placeholder="검색" accesskey="f" class="form-control" id="searchInput" autocomplete="off" v-on:input="searchText = $event.target.value" v-model="searchTextModel" @blur="blur" @focus="focus" @input="inputChange" @keydown.enter="onSubmit" @keydown.tab="onSubmit" @keydown.up="keyUp" @keydown.down="keyDown">
+                <input type="search" name="q" placeholder="검색" accesskey="f" class="form-control" id="searchInput" autocomplete="off" v-on:input="searchText = $event.target.value" v-model="searchTextModel" @blur="blur" @focus="focus" @input="inputChange" @keydown.enter="keyEnter" @keydown.tab="keyEnter" @keydown.up="keyUp" @keydown.down="keyDown">
                 <div v-if="show" class="v-autocomplete-list">
                     <div class="v-autocomplete-list-item" v-for="(item, i) in internalItems" @click="onClickItem(item)" v-bind:key="i" :class="{'v-autocomplete-item-active': i === cursor}" @mouseover="cursor = i">
                         <div>{{ item }}</div>
@@ -24,10 +24,6 @@ import Common from '~/mixins/common';
 export default {
     mixins: [AutocompleteMixin],
     methods: {
-        onSubmit() {
-            if (!this.searchText) return;
-            this.$router.push('/Go?q=' + encodeURIComponent(this.searchText));
-        },
         onClickSearch() {
             if (!this.searchText) return;
             this.$router.push('/Search?q=' + encodeURIComponent(this.searchText));
