@@ -70,6 +70,7 @@ export default {
     cursor: pointer;
     color: #373a3c;
     padding: 0.5rem;
+    word-break: break-all;
 }
 .theseed-dark-mode .v-autocomplete-list-item {
     color: #ddd;
