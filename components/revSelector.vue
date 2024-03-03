@@ -66,11 +66,11 @@ export default {
             return this.$store.state.page.data.rev || this.$route.query.rev;
         },
         pageCount() {
-            return Math.ceil(this.rev / this.itemLength) - 1;
+            return Math.ceil((this.rev - 1) / this.itemLength) - 1;
         },
         itemList() {
             const items = [];
-            for (let i = this.rev - 1 - this.currentPage * this.itemLength; i > 0 && items.length < this.itemLength; i--){
+            for (let i = this.rev - 1 - this.currentPage * this.itemLength; i > 0 && items.length < this.itemLength; i--) {
                 items.push(i);
             }
             return items;
