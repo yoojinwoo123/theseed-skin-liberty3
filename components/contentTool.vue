@@ -19,7 +19,7 @@
                 <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
                 <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
             </template>
-            <nuxt-link v-if="toolList.includes('history')" :to="doc_action_link($store.state.page.data.document, 'history')" class="btn btn-secondary tools-btn">역사</nuxt-link>
+            <nuxt-link v-if="toolList.includes('history')" :to="doc_action_link($store.state.page.data.document, 'history', rev ? { from: rev } : undefined)" class="btn btn-secondary tools-btn">역사</nuxt-link>
             <nuxt-link v-if="toolList.includes('acl')" :to="doc_action_link($store.state.page.data.document, 'acl')" class="btn btn-secondary tools-btn">ACL</nuxt-link>
             <nuxt-link v-if="toolList.includes('delete')" :to="doc_action_link($store.state.page.data.document, 'delete')" class="btn btn-danger tools-btn">삭제</nuxt-link>
             <nuxt-link v-if="toolList.includes('move')" :to="doc_action_link($store.state.page.data.document, 'move')"  class="btn btn-secondary tools-btn">이동</nuxt-link>
