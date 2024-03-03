@@ -62,14 +62,17 @@ export default {
         }
     },
     computed: {
+        rev() {
+            return this.$store.state.page.data.rev || this.$route.query.rev;
+        },
         toolList() {
             const tools = [];
             switch (this.$store.state.page.viewName) {
                 case 'wiki':
                 case 'notfound':
-                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl', 'raw', 'blame', 'diff');
+                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl', 'raw', 'blame');
                     if (this.$store.state.page.data.user) tools.push('contribution');
-                    if (this.rev) tools.push('revert');
+                    if (this.rev) tools.push('revert', 'diff');
                     break;
                 case 'backlink':
                     tools.push('history', 'edit');
@@ -92,9 +95,6 @@ export default {
             }
             if (this.$store.state.page.data.menus?.length) tools.push('menu');
             return tools;
-        },
-        rev() {
-            return this.$store.state.page.data.rev || this.$route.query.rev;
         }
     }
 }
