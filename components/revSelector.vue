@@ -39,7 +39,7 @@ export default {
     },
     methods: {
         prevPage() {
-            if (this.currentPage > 1) {
+            if (this.currentPage > 0) {
                 this.currentPage--;
             }
         },
