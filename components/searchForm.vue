@@ -39,7 +39,7 @@ export default {
                 this.searchTextModel = '';
                 this.searchText = '';
                 this.cursor = -1;
-                this.internalItems = [];
+                this.items = [];
             }
         }
     }
