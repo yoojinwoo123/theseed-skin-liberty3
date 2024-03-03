@@ -11,6 +11,7 @@
                     <span class="star-count">{{ $store.state.page.data.star_count }}</span>
                 </nuxt-link>
             </template>
+            <nuxt-link v-if="toolList.includes('wiki')" :to="doc_action_link($store.state.page.data.document, 'w', rev ? { rev } : undefined)" class="btn btn-secondary tools-btn">보기</nuxt-link>
             <nuxt-link v-if="toolList.includes('backlink')" :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
             <nuxt-link v-if="toolList.includes('discuss')" :to="doc_action_link($store.state.page.data.document, 'discuss')" class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
             <template v-if="toolList.includes('edit')">
@@ -26,10 +27,10 @@
                 <button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                 <div class="dropdown-menu dropdown-menu-right" role="menu">
                     <nuxt-link v-if="toolList.includes('contribution')" :to="contribution_author_link($store.state.page.data.document.title)" class="dropdown-item">기여 내역</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('raw')" :to="doc_action_link($store.state.page.data.document, 'raw', $store.state.page.data.rev ? { rev: $store.state.page.data.rev } : undefined)" class="dropdown-item">RAW</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('blame')" :to="doc_action_link($store.state.page.data.document, 'blame', $store.state.page.data.rev ? { rev: $store.state.page.data.rev } : undefined)" class="dropdown-item">Blame</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('diff')" :to="doc_action_link($store.state.page.data.document, 'diff', $store.state.page.data.rev ? { rev: $store.state.page.data.rev, oldrev: $store.state.page.data.rev - 1 } : undefined)" class="dropdown-item">이전 리버전과 비교</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('revert')" :to="doc_action_link($store.state.page.data.document, 'revert', $store.state.page.data.rev ? { rev: $store.state.page.data.rev } : undefined)" class="dropdown-item">이 리버전으로 되돌리기</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('raw')" :to="doc_action_link($store.state.page.data.document, 'raw', rev ? { rev } : undefined)" class="dropdown-item">RAW</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('blame')" :to="doc_action_link($store.state.page.data.document, 'blame', rev ? { rev } : undefined)" class="dropdown-item">Blame</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('diff')" :to="doc_action_link($store.state.page.data.document, 'diff', rev ? { rev, oldrev: rev - 1 } : undefined)" class="dropdown-item">이전 리버전과 비교</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('revert')" :to="doc_action_link($store.state.page.data.document, 'revert', rev ? { rev } : undefined)" class="dropdown-item">이 리버전으로 되돌리기</nuxt-link>
                     <nuxt-link v-if="toolList.includes('menu')" v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="dropdown-item" v-text="m.title" />
                 </div>
             </template>
@@ -68,7 +69,7 @@ export default {
                 case 'notfound':
                     tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl', 'raw', 'blame', 'diff');
                     if (this.$store.state.page.data.user) tools.push('contribution');
-                    if (this.$store.state.page.data.rev) tools.push('revert');
+                    if (this.rev) tools.push('revert');
                     break;
                 case 'backlink':
                     tools.push('history', 'edit');
@@ -82,7 +83,8 @@ export default {
                     break;
                 case 'raw':
                 case 'diff':
-                    tools.push('history', 'edit', 'backlink');
+                case 'blame':
+                    tools.push('history', 'edit', 'wiki');
                     break;
                 case 'thread':
                     tools.push('discuss');
@@ -90,6 +92,9 @@ export default {
             }
             if (this.$store.state.page.data.menus?.length) tools.push('menu');
             return tools;
+        },
+        rev() {
+            return this.$store.state.page.data.rev || this.$route.query.rev;
         }
     }
 }
