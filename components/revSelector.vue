@@ -1,5 +1,5 @@
 <template>
-    <div v-if="rev && ($store.state.page.viewName === 'diff' || $store.state.page.viewName === 'blame')">
+    <div v-if="$store.state.localConfig['liberty.rev_selector'] !== false && rev && ($store.state.page.viewName === 'diff' || $store.state.page.viewName === 'blame')">
         <ul class="pagination pagination-sm">
             <li class="page-item" :class="{ disabled: currentPage === 0 }">
                 <a class="page-link" href="#" @click.prevent="prevPage"><span class="ion-ios-arrow-back"></span> Prev</a>
