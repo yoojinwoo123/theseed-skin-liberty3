@@ -51,16 +51,8 @@
                             </div>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item" @click.prevent="$modal.show('theseed-setting');">설정</a>
-                            <template v-if="$store.state.localConfig['wiki.no_use_prefers_color'] === true">
-                                <a v-if="$store.state.localConfig['wiki.dark_mode'] !== true"
-                                    href="#" class="dropdown-item"
-                                    @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: true})"
-                                >다크 테마로</a>
-                                <a v-else-if="$store.state.localConfig['wiki.dark_mode'] === true"
-                                    href="#" class="dropdown-item"
-                                    @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.dark_mode', value: false})"
-                                >라이트 테마로</a>
-                            </template>
+                            <a v-if="$store.state.currentTheme === 'light'" href="#" class="dropdown-item" @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.theme', value: 'dark'})">다크 테마로</a>
+                            <a v-if="$store.state.currentTheme === 'dark'" href="#" class="dropdown-item" @click.prevent="$store.commit('localConfigSetValue', {key: 'wiki.theme', value: 'light'})">라이트 테마로</a>
                             <div class="dropdown-divider"></div>
                             <template v-if="$store.state.session.member">
                                 <nuxt-link to="/member/mypage" class="dropdown-item">내 정보</nuxt-link>
