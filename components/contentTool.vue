@@ -11,6 +11,7 @@
                     <span class="star-count">{{ $store.state.page.data.star_count }}</span>
                 </nuxt-link>
             </template>
+            <nuxt-link v-if="toolList.includes('wiki')" :to="doc_action_link($store.state.page.data.document, 'w', rev ? { rev } : undefined)" class="btn btn-secondary tools-btn">보기</nuxt-link>
             <nuxt-link v-if="toolList.includes('backlink')" :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
             <nuxt-link v-if="toolList.includes('discuss')" :to="doc_action_link($store.state.page.data.document, 'discuss')" class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
             <template v-if="toolList.includes('edit')">
@@ -18,7 +19,7 @@
                 <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
                 <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
             </template>
-            <nuxt-link v-if="toolList.includes('history')" :to="doc_action_link($store.state.page.data.document, 'history')" class="btn btn-secondary tools-btn">역사</nuxt-link>
+            <nuxt-link v-if="toolList.includes('history')" :to="doc_action_link($store.state.page.data.document, 'history', rev ? { from: rev } : undefined)" class="btn btn-secondary tools-btn">역사</nuxt-link>
             <nuxt-link v-if="toolList.includes('acl')" :to="doc_action_link($store.state.page.data.document, 'acl')" class="btn btn-secondary tools-btn">ACL</nuxt-link>
             <nuxt-link v-if="toolList.includes('delete')" :to="doc_action_link($store.state.page.data.document, 'delete')" class="btn btn-danger tools-btn">삭제</nuxt-link>
             <nuxt-link v-if="toolList.includes('move')" :to="doc_action_link($store.state.page.data.document, 'move')"  class="btn btn-secondary tools-btn">이동</nuxt-link>
@@ -26,10 +27,10 @@
                 <button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                 <div class="dropdown-menu dropdown-menu-right" role="menu">
                     <nuxt-link v-if="toolList.includes('contribution')" :to="contribution_author_link($store.state.page.data.document.title)" class="dropdown-item">기여 내역</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('raw')" :to="doc_action_link($store.state.page.data.document, 'raw', $store.state.page.data.rev ? { rev: $store.state.page.data.rev } : undefined)" class="dropdown-item">RAW</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('blame')" :to="doc_action_link($store.state.page.data.document, 'blame', $store.state.page.data.rev ? { rev: $store.state.page.data.rev } : undefined)" class="dropdown-item">Blame</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('diff')" :to="doc_action_link($store.state.page.data.document, 'diff', $store.state.page.data.rev ? { rev: $store.state.page.data.rev, oldrev: $store.state.page.data.rev - 1 } : undefined)" class="dropdown-item">이전 리버전과 비교</nuxt-link>
-                    <nuxt-link v-if="toolList.includes('revert')" :to="doc_action_link($store.state.page.data.document, 'revert', $store.state.page.data.rev ? { rev: $store.state.page.data.rev } : undefined)" class="dropdown-item">이 리버전으로 되돌리기</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('raw')" :to="doc_action_link($store.state.page.data.document, 'raw', rev ? { rev } : undefined)" class="dropdown-item">RAW</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('blame')" :to="doc_action_link($store.state.page.data.document, 'blame', rev ? { rev } : undefined)" class="dropdown-item">Blame</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('diff')" :to="doc_action_link($store.state.page.data.document, 'diff', rev ? { rev, oldrev: rev - 1 } : undefined)" class="dropdown-item">이전 리버전과 비교</nuxt-link>
+                    <nuxt-link v-if="toolList.includes('revert')" :to="doc_action_link($store.state.page.data.document, 'revert', rev ? { rev } : undefined)" class="dropdown-item">이 리버전으로 되돌리기</nuxt-link>
                     <nuxt-link v-if="toolList.includes('menu')" v-for="m in $store.state.page.data.menus" :key="m.to" :to="m.to" class="dropdown-item" v-text="m.title" />
                 </div>
             </template>
@@ -56,19 +57,23 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
+        $route() {
             this.$store.commit('localConfigSetValue', {key: 'liberty.showEditMessage', value: false});
         }
     },
     computed: {
+        rev() {
+            return this.$store.state.localConfig['liberty.rev_convenience'] !== false && (this.$store.state.page.data.rev || this.$route.query.rev);
+        },
         toolList() {
             const tools = [];
             switch (this.$store.state.page.viewName) {
                 case 'wiki':
                 case 'notfound':
-                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl', 'raw', 'blame', 'diff');
+                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl');
+                    if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('raw', 'blame');
                     if (this.$store.state.page.data.user) tools.push('contribution');
-                    if (this.$store.state.page.data.rev) tools.push('revert');
+                    if (this.rev) tools.push('revert', 'diff');
                     break;
                 case 'backlink':
                     tools.push('history', 'edit');
@@ -82,7 +87,9 @@ export default {
                     break;
                 case 'raw':
                 case 'diff':
-                    tools.push('history', 'edit', 'backlink');
+                case 'blame':
+                    tools.push('history', 'edit');
+                    if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('wiki');
                     break;
                 case 'thread':
                     tools.push('discuss');
