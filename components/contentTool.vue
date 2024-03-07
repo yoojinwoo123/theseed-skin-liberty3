@@ -15,8 +15,8 @@
             <nuxt-link v-if="toolList.includes('backlink')" :to="doc_action_link($store.state.page.data.document, 'backlink')" class="btn btn-secondary tools-btn">역링크</nuxt-link>
             <nuxt-link v-if="toolList.includes('discuss')" :to="doc_action_link($store.state.page.data.document, 'discuss')" class="btn btn-secondary tools-btn" :class="{ 'btn-discuss-progress': $store.state.page.data.discuss_progress }">토론</nuxt-link>
             <template v-if="toolList.includes('edit')">
-                <a v-if="$store.state.page.data.editable === true && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-pencil-square"></span> 편집 요청</a>
-                <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="onClickEditBtn" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
+                <a v-if="$store.state.page.data.editable === true && $store.state.page.data.edit_acl_message" href="#" @click.prevent="$emit('onClickEditBtn')" class="btn btn-secondary tools-btn"><span class="fa fa-pencil-square"></span> 편집 요청</a>
+                <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="$emit('onClickEditBtn')" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
                 <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
             </template>
             <nuxt-link v-if="toolList.includes('history')" :to="doc_action_link($store.state.page.data.document, 'history', rev ? { from: rev } : undefined)" class="btn btn-secondary tools-btn">역사</nuxt-link>
@@ -43,24 +43,6 @@ import Common from '~/mixins/common';
 
 export default {
     mixins: [Common],
-    methods: {
-        onClickEditBtn() {
-            if (this.$store.state.localConfig['liberty.showEditMessage']) {
-                if (this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message)
-                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'new_edit_request'));
-                else
-                    this.$router.push(this.doc_action_link(this.$store.state.page.data.document, 'edit'));
-            }
-            else {
-                this.$store.commit('localConfigSetValue', {key: 'liberty.showEditMessage', value: true});
-            }
-        }
-    },
-    watch: {
-        $route() {
-            this.$store.commit('localConfigSetValue', {key: 'liberty.showEditMessage', value: false});
-        }
-    },
     computed: {
         rev() {
             return this.$store.state.localConfig['liberty.rev_convenience'] !== false && (this.$store.state.page.data.rev || this.$route.query.rev);

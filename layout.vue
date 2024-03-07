@@ -98,7 +98,7 @@
                     <span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
                 </div>
                 <div class="liberty-content-header">
-                    <content-tool />
+                    <content-tool @onClickEditBtn="showEditMessage" />
                     <div class="title">
                         <h1 v-if="$store.state.page.data.document && $store.state.page.viewName !== 'error'">
                             <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace !== false" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
@@ -125,14 +125,16 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.page.data.edit_acl_message && $store.state.localConfig['liberty.showEditMessage']" class="alert alert-danger" role="alert">
+                    <div v-if="isShowACLMessage && $store.state.page.data.edit_acl_message" class="alert alert-danger" role="alert">
+                        <button @click="isShowACLMessage = false" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <span v-html="$store.state.page.data.edit_acl_message" @click="onDynamicContentClick($event)"></span>
                         <span v-if="requestable">대신 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'new_edit_request')">편집 요청</nuxt-link>을 생성할 수 있습니다.</span>
                     </div>
                     <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" id="userDiscussAlert" class="alert alert-info fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
+                        <button @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})" type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Close</span>
                         </button>
                         현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
                     </div>
@@ -145,7 +147,7 @@
                 </div>
                 <div id="bottom" class="liberty-footer">
                     <ul v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.date" class="footer-info">
-                        <li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" />에 마지막으로 편집되었습니다.</li>
+                        <li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" :relative="true" />에 마지막으로 편집되었습니다.</li>
                         <li class="footer-info-copyright" v-html="$store.state.config['wiki.copyright_text']" />
                     </ul>
                     <ul class="footer-places" v-html="$store.state.config['skin.liberty.footer_html']" />
@@ -213,7 +215,13 @@ export default {
     data() {
         return {
             License,
+            isShowACLMessage: false
         };
+    },
+    watch: {
+        $route() {
+            this.isShowACLMessage = false;
+        }
     },
     computed: {
         skinConfig() {
@@ -225,10 +233,26 @@ export default {
                 '--liberty-navbar-logo-size': this.$store.state.config['skin.liberty.navbar_logo_size'],
                 '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
                 '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
+                '--brand-color-1': this.$store.state.config['skin.liberty.brand_color_1'] ?? this.$store.state.currentTheme === 'light' ? '#4188f1' : '#2d2f34',
+                '--brand-color-2': this.$store.state.config['skin.liberty.brand_color_2'] ?? this.$store.state.config['skin.liberty.brand_color_1'],
+                '--brand-bright-color-1': this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.$store.state.currentTheme === 'light' ? '#5997f3' : '#2d2f34',
+                '--brand-bright-color-2': this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? this.$store.state.config['skin.liberty.brand_bright_color_1'],
+                '--text-color': this.$store.state.config['skin.liberty.text_color'] ?? this.$store.state.currentTheme === 'light' ? '#373a3c' : '#ddd',
+                '--article-background-color': this.$store.state.config['skin.liberty.article_background_color'] ?? this.$store.state.currentTheme === 'light' ? '#f5f5f5' : '#000',
             };
         },
         requestable() {
             return this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message;
+        }
+    },
+    methods: {
+        showEditMessage() {
+            if (this.isShowACLMessage) {
+                this.$router.push(this.doc_action_link(this.$store.state.page.data.document, this.requestable ? 'new_edit_request' : 'edit'));
+            }
+            else {
+                this.isShowACLMessage = true;
+            }
         }
     }
 }
