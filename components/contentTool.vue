@@ -55,7 +55,8 @@ export default {
                     tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl');
                     if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('raw', 'blame');
                     if (this.$store.state.page.data.user) tools.push('contribution');
-                    if (this.rev) tools.push('revert', 'diff');
+                    if (this.rev) tools.push('diff');
+                    if (this.$store.state.page.data.editable === true && !this.$store.state.page.data.edit_acl_message && this.rev) tools.push('revert');
                     break;
                 case 'backlink':
                     tools.push('history', 'edit');
