@@ -98,7 +98,7 @@
                     <span class="label label-danger" v-html="$store.state.config['wiki.sitenotice']" />
                 </div>
                 <div class="liberty-content-header">
-                    <content-tool />
+                    <content-tool @onClickEditBtn="showEditMessage" />
                     <div class="title">
                         <h1 v-if="$store.state.page.data.document && $store.state.page.viewName !== 'error'">
                             <nuxt-link :to="doc_action_link($store.state.page.data.document, 'w')"><span v-if="$store.state.page.data.document.forceShowNamespace !== false" class="namespace">{{$store.state.page.data.document.namespace}}:</span>{{$store.state.page.data.document.title}}</nuxt-link>
@@ -125,14 +125,16 @@
                     </div>
                 </div>
                 <div class="liberty-content-main wiki-article">
-                    <div v-if="$store.state.page.data.edit_acl_message && $store.state.localConfig['liberty.showEditMessage']" class="alert alert-danger" role="alert">
+                    <div v-if="isShowACLMessage && $store.state.page.data.edit_acl_message" class="alert alert-danger" role="alert">
+                        <button @click="isShowACLMessage = false" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <span v-html="$store.state.page.data.edit_acl_message" @click="onDynamicContentClick($event)"></span>
                         <span v-if="requestable">대신 <nuxt-link :to="doc_action_link($store.state.page.data.document, 'new_edit_request')">편집 요청</nuxt-link>을 생성할 수 있습니다.</span>
                     </div>
                     <div v-if="$store.state.session.member && $store.state.session.member.user_document_discuss && $store.state.localConfig['wiki.hide_user_document_discuss'] !== $store.state.session.member.user_document_discuss" id="userDiscussAlert" class="alert alert-info fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})">
+                        <button @click="$store.commit('localConfigSetValue', {key: 'wiki.hide_user_document_discuss', value: $store.state.session.member.user_document_discuss})" type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
-                            <span class="sr-only">Close</span>
                         </button>
                         현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
                     </div>
@@ -213,7 +215,13 @@ export default {
     data() {
         return {
             License,
+            isShowACLMessage: false
         };
+    },
+    watch: {
+        $route() {
+            this.isShowACLMessage = false;
+        }
     },
     computed: {
         skinConfig() {
@@ -235,6 +243,16 @@ export default {
         },
         requestable() {
             return this.$store.state.page.data.editable === true && this.$store.state.page.data.edit_acl_message;
+        }
+    },
+    methods: {
+        showEditMessage() {
+            if (this.isShowACLMessage) {
+                this.$router.push(this.doc_action_link(this.$store.state.page.data.document, this.requestable ? 'new_edit_request' : 'edit'));
+            }
+            else {
+                this.isShowACLMessage = true;
+            }
         }
     }
 }
