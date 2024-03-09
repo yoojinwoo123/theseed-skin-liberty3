@@ -224,14 +224,14 @@ export default {
         }
     },
     head() {
-        const t = { meta: [] };
-
-        this.$store.state.currentTheme === 'light' && t.meta.push({
-            name: 'theme-color',
-            content: this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color']
-        });
-
-        return t;
+        return {
+            meta: [
+                {
+                    name: 'theme-color',
+                    content: this.$store.state.currentTheme === 'light' ?  this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'] : this.default['brand_color']
+                }
+            ]
+        };
     },
     computed: {
         default() {
