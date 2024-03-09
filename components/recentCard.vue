@@ -29,7 +29,7 @@ export default {
     methods: {
         getDateType(date) {
             const now = Math.floor((new Date()).getTime() / 1000);
-            return (now - 86400) > date ? 'y-m-d' : 'H:i:s';
+            return (now - 86400) > date ? 'Y/m/d' : 'H:i:s';
         }
     }
 }
