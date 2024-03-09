@@ -223,7 +223,20 @@ export default {
             this.isShowACLMessage = false;
         }
     },
+    head() {
+        return {
+            meta: [
+                { name: 'theme-color', content: this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'] }
+            ]
+        }
+    },
     computed: {
+        default() {
+            return {
+                brand_color: this.$store.state.currentTheme === 'light' ? '#4188f1' : '#2d2f34',
+                brand_bright_color: this.$store.state.currentTheme === 'light' ? '#5997f3' : '#2d2f34'
+            };
+        },
         skinConfig() {
             return {
                 '--liberty-navbar-color': this.$store.state.config['skin.liberty.navbar_color'],
@@ -233,10 +246,10 @@ export default {
                 '--liberty-navbar-logo-size': this.$store.state.config['skin.liberty.navbar_logo_size'],
                 '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
                 '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
-                '--brand-color-1': this.$store.state.config['skin.liberty.brand_color_1'] ?? this.$store.state.currentTheme === 'light' ? '#4188f1' : '#2d2f34',
-                '--brand-color-2': this.$store.state.config['skin.liberty.brand_color_2'] ?? this.$store.state.config['skin.liberty.brand_color_1'],
-                '--brand-bright-color-1': this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.$store.state.currentTheme === 'light' ? '#5997f3' : '#2d2f34',
-                '--brand-bright-color-2': this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? this.$store.state.config['skin.liberty.brand_bright_color_1'],
+                '--brand-color-1': this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'],
+                '--brand-color-2': this.$store.state.config['skin.liberty.brand_color_2'] ?? this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'],
+                '--brand-bright-color-1': this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.default['brand_bright_color'],
+                '--brand-bright-color-2': this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.default['brand_bright_color'],
                 '--text-color': this.$store.state.config['skin.liberty.text_color'] ?? this.$store.state.currentTheme === 'light' ? '#373a3c' : '#ddd',
                 '--article-background-color': this.$store.state.config['skin.liberty.article_background_color'] ?? this.$store.state.currentTheme === 'light' ? '#f5f5f5' : '#000',
             };
