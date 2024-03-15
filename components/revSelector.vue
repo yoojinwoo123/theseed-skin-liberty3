@@ -36,6 +36,7 @@ export default {
     data() {
         return {
             currentPage: 0,
+            width: 0
         }
     },
     methods: {
@@ -48,6 +49,10 @@ export default {
             if (this.currentPage < this.pageCount) {
                 this.currentPage++;
             }
+        },
+        resized() {
+            this.currentPage = 0;
+            this.width = window.innerWidth;
         }
     },
     watch: {
@@ -57,7 +62,7 @@ export default {
     },
     computed: {
         itemLength() {
-            return window.innerWidth < 610 ? 5 : 10;
+            return width < 610 ? 5 : 10;
         },
         rev() {
             return this.$store.state.page.data.rev || this.$route.query.rev;
@@ -73,5 +78,9 @@ export default {
             return items;
         }
     },
+    created() {
+        window.addEventListener('resize', this.resized);
+        this.resized();
+    }
 };
 </script>
