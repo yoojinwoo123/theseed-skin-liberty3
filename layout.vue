@@ -1,7 +1,7 @@
 <template>
     <div class="Liberty" :style="skinConfig">
         <div id="top"></div>
-        <div class="nav-wrapper navbar-fixed-top">
+        <div class="nav-wrapper" :class="{ 'navbar-fixed-top': $store.state.localConfig['liberty.fixed_navbar'] === true }">
             <nav class="navbar navbar-dark">
                 <nuxt-link class="navbar-brand" to="/" v-text="$store.state.config['skin.liberty.navbar_logo_text']"/>
                 <ul class="nav navbar-nav">
@@ -166,6 +166,7 @@
         </div>
         <setting>
             <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
+            <setting-item-checkbox label="내비게이션 바 고정" ckey="liberty.fixed_navbar" />
             <setting-item-checkbox label="페이지 이동 시 검색 창 초기화" ckey="liberty.reset_search_on_move" default="checked" />
             <setting-item-checkbox label="리버전 선택기" ckey="liberty.rev_selector" default="checked" />
             <setting-item-checkbox label="리버전 편의성 개선" ckey="liberty.rev_convenience" default="checked" />

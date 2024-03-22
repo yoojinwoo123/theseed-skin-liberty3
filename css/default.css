@@ -9,7 +9,6 @@
 
 html {
     font-size: 15px;
-    font-smoothing: antialiased;
 }
 
 body {
@@ -128,6 +127,7 @@ del, s, strike {
 .Liberty .nav-wrapper {
     min-height: 2.8rem;
     background-color: var(--liberty-navbar-color, #4188f1);
+    position: absolute;
     z-index: 100;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
     font-weight: bold;
@@ -716,5 +716,5 @@ div.scroll-buttons {
 }
 
 .navbar-fixed-top {
-    position: absolute;
+    position: fixed;
 }
