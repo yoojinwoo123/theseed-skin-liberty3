@@ -1,7 +1,7 @@
 <template>
     <div class="Liberty" :style="skinConfig">
         <div id="top"></div>
-        <div class="nav-wrapper navbar-fixed-top">
+        <div class="nav-wrapper" :class="{ 'navbar-fixed-top': $store.state.localConfig['liberty.fixed_navbar'] === true }">
             <nav class="navbar navbar-dark">
                 <nuxt-link class="navbar-brand" to="/" v-text="$store.state.config['skin.liberty.navbar_logo_text']"/>
                 <ul class="nav navbar-nav">
@@ -147,7 +147,7 @@
                 </div>
                 <div id="bottom" class="liberty-footer">
                     <ul v-if="$store.state.page.viewName === 'wiki' && $store.state.page.data.date" class="footer-info">
-                        <li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" :relative="true" />에 마지막으로 편집되었습니다.</li>
+                        <li class="footer-info-lastmod">이 문서는 <local-date :date="$store.state.page.data.date" />에 마지막으로 편집되었습니다.</li>
                         <li class="footer-info-copyright" v-html="$store.state.config['wiki.copyright_text']" />
                     </ul>
                     <ul class="footer-places" v-html="$store.state.config['skin.liberty.footer_html']" />
@@ -166,6 +166,7 @@
         </div>
         <setting>
             <setting-item-checkbox label="사이드바 고정" ckey="liberty.fixed_sidebar" />
+            <setting-item-checkbox label="내비게이션 바 고정" ckey="liberty.fixed_navbar" />
             <setting-item-checkbox label="페이지 이동 시 검색 창 초기화" ckey="liberty.reset_search_on_move" default="checked" />
             <setting-item-checkbox label="리버전 선택기" ckey="liberty.rev_selector" default="checked" />
             <setting-item-checkbox label="리버전 편의성 개선" ckey="liberty.rev_convenience" default="checked" />
@@ -223,7 +224,23 @@ export default {
             this.isShowACLMessage = false;
         }
     },
+    head() {
+        return {
+            meta: [
+                {
+                    name: 'theme-color',
+                    content: this.$store.state.currentTheme === 'light' ?  this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'] : this.default['brand_color']
+                }
+            ]
+        };
+    },
     computed: {
+        default() {
+            return {
+                brand_color: this.$store.state.currentTheme === 'light' ? '#4188f1' : '#2d2f34',
+                brand_bright_color: this.$store.state.currentTheme === 'light' ? '#5997f3' : '#2d2f34'
+            };
+        },
         skinConfig() {
             return {
                 '--liberty-navbar-color': this.$store.state.config['skin.liberty.navbar_color'],
@@ -233,10 +250,10 @@ export default {
                 '--liberty-navbar-logo-size': this.$store.state.config['skin.liberty.navbar_logo_size'],
                 '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
                 '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
-                '--brand-color-1': this.$store.state.config['skin.liberty.brand_color_1'] ?? this.$store.state.currentTheme === 'light' ? '#4188f1' : '#2d2f34',
-                '--brand-color-2': this.$store.state.config['skin.liberty.brand_color_2'] ?? this.$store.state.config['skin.liberty.brand_color_1'],
-                '--brand-bright-color-1': this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.$store.state.currentTheme === 'light' ? '#5997f3' : '#2d2f34',
-                '--brand-bright-color-2': this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? this.$store.state.config['skin.liberty.brand_bright_color_1'],
+                '--brand-color-1': this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'],
+                '--brand-color-2': this.$store.state.config['skin.liberty.brand_color_2'] ?? this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'],
+                '--brand-bright-color-1': this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.default['brand_bright_color'],
+                '--brand-bright-color-2': this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.default['brand_bright_color'],
                 '--text-color': this.$store.state.config['skin.liberty.text_color'] ?? this.$store.state.currentTheme === 'light' ? '#373a3c' : '#ddd',
                 '--article-background-color': this.$store.state.config['skin.liberty.article_background_color'] ?? this.$store.state.currentTheme === 'light' ? '#f5f5f5' : '#000',
             };
