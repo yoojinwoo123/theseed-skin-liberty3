@@ -218,7 +218,6 @@ del, s, strike {
 .Liberty .nav-wrapper .navbar .form-inline .btn {
     color: #4f5b63;
     padding: 0.2rem 0.4rem;
-    line-height: 22px;
 }
 
 .Liberty .nav-wrapper .navbar .form-inline .btn:hover, .Liberty .nav-wrapper .navbar .form-inline .btn:focus {
