@@ -8,7 +8,7 @@
                 <nuxt-link v-if="$store.state.page.viewName === 'diff'" :to="doc_action_link($store.state.page.data.document, 'diff', { rev, oldrev: n })" class="page-link">{{ n }}</nuxt-link>
                 <nuxt-link v-if="$store.state.page.viewName === 'blame'" :to="doc_action_link($store.state.page.data.document, 'blame', { rev: n })" class="page-link">{{ n }}</nuxt-link>
             </li>
-            <li class="page-item" :class="{ disabled: currentPage === pageCount }">
+            <li class="page-item" :class="{ disabled: currentPage >= pageCount }">
                 <a class="page-link" href="#" @click.prevent="nextPage">Next <span class="ion-ios-arrow-forward"></span></a>
             </li>
         </ul>
@@ -62,7 +62,7 @@ export default {
     },
     computed: {
         itemLength() {
-            return width < 610 ? 5 : 10;
+            return this.width < 610 ? 5 : 10;
         },
         rev() {
             return this.$store.state.page.data.rev || this.$route.query.rev;
