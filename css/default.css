@@ -131,6 +131,13 @@ del, s, strike {
     z-index: 100;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
     font-weight: bold;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.Liberty .nav-wrapper.navbar-fixed-top {
+    position: fixed;
 }
 
 .Liberty .nav-wrapper .navbar {
@@ -713,8 +720,4 @@ div.scroll-buttons {
     bottom: 10px;
     right: 0px;
     opacity: 0.8;
-}
-
-.navbar-fixed-top {
-    position: fixed;
 }
