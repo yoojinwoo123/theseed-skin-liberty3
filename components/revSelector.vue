@@ -78,7 +78,7 @@ export default {
             return items;
         }
     },
-    created() {
+    mounted() {
         window.addEventListener('resize', this.resized);
         this.resized();
     }
