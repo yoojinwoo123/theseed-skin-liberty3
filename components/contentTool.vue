@@ -57,7 +57,7 @@ export default {
                 case 'wiki':
                     tools.push('backlink', 'acl');
                     if (this.$store.state.page.data.date !== null) {
-                        tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl');
+                        tools.push('star', 'discuss', 'edit', 'history');
                         if (this.convenience) tools.push('raw', 'blame');
                         if (this.rev) tools.push('diff');
                         if (this.rev && this.$store.state.page.data.editable === true && !this.$store.state.page.data.edit_acl_message) tools.push('revert');
