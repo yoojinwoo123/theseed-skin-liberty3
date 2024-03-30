@@ -6,7 +6,7 @@
                     <span class="fa fa-star"></span>
                     <span class="star-count">{{ $store.state.page.data.star_count }}</span>
                 </nuxt-link>
-                <nuxt-link v-else-if="$store.state.page.data.star_count || $store.state.page.data.star_count === 0" :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
+                <nuxt-link v-else-if="$store.state.page.data.star_count >= 0" :to="doc_action_link($store.state.page.data.document, 'member/star')" class="btn btn-secondary tools-btn" v-tooltip="`Star`">
                     <span class="fa fa-star-o"></span>
                     <span class="star-count">{{ $store.state.page.data.star_count }}</span>
                 </nuxt-link>
@@ -17,7 +17,8 @@
             <template v-if="toolList.includes('edit')">
                 <a v-if="$store.state.page.data.editable === true && $store.state.page.data.edit_acl_message" href="#" @click.prevent="$emit('onClickEditBtn')" class="btn btn-secondary tools-btn"><span class="fa fa-pencil-square"></span> 편집 요청</a>
                 <a v-else-if="$store.state.page.data.editable === false && $store.state.page.data.edit_acl_message" href="#" @click.prevent="$emit('onClickEditBtn')" class="btn btn-secondary tools-btn"><span class="fa fa-lock"></span> 편집</a>
-                <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
+                <nuxt-link v-else-if="$store.state.page.data.editable === true && !$store.state.page.data.edit_acl_message" :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn"><span class="fa fa-edit"></span> 편집</nuxt-link>
+                <nuxt-link v-else :to="doc_action_link($store.state.page.data.document, 'edit')" class="btn btn-secondary tools-btn">편집</nuxt-link>
             </template>
             <nuxt-link v-if="toolList.includes('history')" :to="doc_action_link($store.state.page.data.document, 'history', rev ? { from: rev } : undefined)" class="btn btn-secondary tools-btn">역사</nuxt-link>
             <nuxt-link v-if="toolList.includes('acl')" :to="doc_action_link($store.state.page.data.document, 'acl')" class="btn btn-secondary tools-btn">ACL</nuxt-link>
@@ -44,19 +45,27 @@ import Common from '~/mixins/common';
 export default {
     mixins: [Common],
     computed: {
+        convenience() {
+            return this.$store.state.localConfig['liberty.rev_convenience'] !== false;
+        },
         rev() {
-            return this.$store.state.localConfig['liberty.rev_convenience'] !== false && (this.$store.state.page.data.rev || this.$route.query.rev);
+            return this.convenience && (this.$store.state.page.data.rev || this.$route.query.rev);
         },
         toolList() {
             const tools = [];
             switch (this.$store.state.page.viewName) {
                 case 'wiki':
-                case 'notfound':
-                    tools.push('star', 'backlink', 'discuss', 'edit', 'history', 'acl');
-                    if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('raw', 'blame');
+                    tools.push('backlink', 'acl');
+                    if (this.$store.state.page.data.date !== null) {
+                        tools.push('star', 'discuss', 'edit', 'history');
+                        if (this.convenience) tools.push('raw', 'blame');
+                        if (this.rev) tools.push('diff');
+                        if (this.rev && this.$store.state.page.data.editable === true && !this.$store.state.page.data.edit_acl_message) tools.push('revert');
+                    }
                     if (this.$store.state.page.data.user) tools.push('contribution');
-                    if (this.rev) tools.push('diff');
-                    if (this.$store.state.page.data.editable === true && !this.$store.state.page.data.edit_acl_message && this.rev) tools.push('revert');
+                    break;
+                case 'notfound':
+                    tools.push('backlink', 'discuss', 'edit', 'history', 'acl');
                     break;
                 case 'backlink':
                     tools.push('history', 'edit');
@@ -72,9 +81,12 @@ export default {
                 case 'diff':
                 case 'blame':
                     tools.push('history', 'edit');
-                    if (this.$store.state.localConfig['liberty.rev_convenience'] !== false) tools.push('wiki');
+                    if (this.convenience) tools.push('wiki');
                     break;
                 case 'thread':
+                case 'thread_list_close':
+                case 'edit_request':
+                case 'edit_request_close':
                     tools.push('discuss');
                     break;
             }
