@@ -222,6 +222,7 @@ del, s, strike {
 }
 
 .Liberty .nav-wrapper .navbar .form-inline .btn {
+    height: 2rem;
     color: #4f5b63;
     padding: 0.2rem 0.4rem;
 }
