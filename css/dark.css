@@ -88,6 +88,7 @@ body.theseed-dark-mode {
 	color: #ddd;
 }
 
+.theseed-dark-mode .dropdown-menu .dropdown-item:focus,
 .theseed-dark-mode .dropdown-menu .dropdown-item:hover {
 	background-color: #383b40;
 }
@@ -98,6 +99,10 @@ body.theseed-dark-mode {
 .theseed-dark-mode .Liberty .content-wrapper .liberty-sidebar .liberty-right-fixed .live-recent .live-recent-header .nav .nav-item .nav-link:hover {
 	background: black;
 	color: #ddd;
+}
+
+.theseed-dark-mode .Liberty .content-wrapper .liberty-sidebar .liberty-right-fixed .live-recent .live-recent-header .nav .nav-item .nav-link.active::before {
+	border-color: #e1e8ed;
 }
 
 .theseed-dark-mode .Liberty .content-wrapper .liberty-sidebar .liberty-right-fixed .live-recent .live-recent-content .live-recent-list .recent-item {
