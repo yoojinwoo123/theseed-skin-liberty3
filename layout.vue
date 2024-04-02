@@ -139,6 +139,7 @@
                         현재 진행 중인 <nuxt-link :to="doc_action_link(user_doc($store.state.session.member.username), 'discuss')">사용자 토론</nuxt-link>이 있습니다.
                     </div>
                     <rev-selector />
+                    <from-selector />
                     <nuxt />
                     <div v-if="$store.state.page.viewName === 'license'">
                         <h2>Liberty skin license</h2>
@@ -192,6 +193,7 @@ import RecentCard from './components/recentCard';
 import SearchForm from './components/searchForm';
 import ContentTool from './components/contentTool';
 import RevSelector from './components/revSelector';
+import FromSelector from './components/fromSelector';
 import License from "raw-loader!./LICENSE";
 
 if (process.browser) {
@@ -211,7 +213,8 @@ export default {
         RecentCard,
         SearchForm,
         ContentTool,
-        RevSelector
+        RevSelector,
+        FromSelector
     },
     data() {
         return {
@@ -226,36 +229,30 @@ export default {
     },
     head() {
         return {
-            meta: [
-                {
-                    name: 'theme-color',
-                    content: this.$store.state.currentTheme === 'light' ?  this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'] : this.default['brand_color']
-                }
-            ]
+            meta: [{ name: 'theme-color', content: this.brand_color }]
         };
     },
     computed: {
-        default() {
-            return {
-                brand_color: this.$store.state.currentTheme === 'light' ? '#4188f1' : '#2d2f34',
-                brand_bright_color: this.$store.state.currentTheme === 'light' ? '#5997f3' : '#2d2f34'
-            };
+        brand_color() {
+            return this.selectByTheme(this.$store.state.config['skin.liberty.brand_color_1'] ?? '#4188f1', '#2d2f34');
         },
         skinConfig() {
             return {
-                '--liberty-navbar-color': this.$store.state.config['skin.liberty.navbar_color'],
+                '--liberty-brand-color': this.brand_color,
+                '--liberty-brand-dark-color': this.selectByTheme(this.$store.state.config['skin.liberty.brand_dark_color_1'] ?? this.darkenColor(this.brand_color), '#16171a'),
+                '--liberty-brand-bright-color': this.selectByTheme(this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.lightenColor(this.brand_color), '#383b40'),
                 '--liberty-navbar-logo-image': this.$store.state.config['skin.liberty.navbar_logo_image'],
                 '--liberty-navbar-logo-minimum-width': this.$store.state.config['skin.liberty.navbar_logo_minimum_width'],
                 '--liberty-navbar-logo-width': this.$store.state.config['skin.liberty.navbar_logo_width'],
                 '--liberty-navbar-logo-size': this.$store.state.config['skin.liberty.navbar_logo_size'],
                 '--liberty-navbar-logo-padding': this.$store.state.config['skin.liberty.navbar_logo_padding'],
                 '--liberty-navbar-logo-margin': this.$store.state.config['skin.liberty.navbar_logo_margin'],
-                '--brand-color-1': this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'],
-                '--brand-color-2': this.$store.state.config['skin.liberty.brand_color_2'] ?? this.$store.state.config['skin.liberty.brand_color_1'] ?? this.default['brand_color'],
-                '--brand-bright-color-1': this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.default['brand_bright_color'],
-                '--brand-bright-color-2': this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? this.$store.state.config['skin.liberty.brand_bright_color_1'] ?? this.default['brand_bright_color'],
-                '--text-color': this.$store.state.config['skin.liberty.text_color'] ?? this.$store.state.currentTheme === 'light' ? '#373a3c' : '#ddd',
-                '--article-background-color': this.$store.state.config['skin.liberty.article_background_color'] ?? this.$store.state.currentTheme === 'light' ? '#f5f5f5' : '#000',
+                '--brand-color-1': 'var(--liberty-brand-color)',
+                '--brand-color-2': this.selectByTheme(this.$store.state.config['skin.liberty.brand_color_2'] ?? 'var(--liberty-brand-color)', 'var(--liberty-brand-color)'),
+                '--brand-bright-color-1': 'var(--liberty-brand-bright-color)',
+                '--brand-bright-color-2': this.selectByTheme(this.$store.state.config['skin.liberty.brand_bright_color_2'] ?? 'var(--liberty-brand-bright-color)', 'var(--liberty-brand-bright-color)'),
+                '--text-color': this.selectByTheme('#373a3c', '#ddd'),
+                '--article-background-color': this.selectByTheme('#f5f5f5', '#000'),
             };
         },
         requestable() {
@@ -270,6 +267,31 @@ export default {
             else {
                 this.isShowACLMessage = true;
             }
+        },
+        darkenColor(hex, percent=50) {
+            let r = parseInt(hex.substring(1, 3), 16);
+            let g = parseInt(hex.substring(3, 5), 16);
+            let b = parseInt(hex.substring(5, 7), 16);
+
+            r = Math.round(r * (1 - percent / 100));
+            g = Math.round(g * (1 - percent / 100));
+            b = Math.round(b * (1 - percent / 100));
+            
+            return "#" + ((r < 16 ? "0" : "") + r.toString(16)) + ((g < 16 ? "0" : "") + g.toString(16)) + ((b < 16 ? "0" : "") + b.toString(16));
+        },
+        lightenColor(hex, percent=50) {
+            let r = parseInt(hex.substring(1, 3), 16);
+            let g = parseInt(hex.substring(3, 5), 16);
+            let b = parseInt(hex.substring(5, 7), 16);
+
+            r = Math.round(r + (255 - r) * (percent / 100));
+            g = Math.round(g + (255 - g) * (percent / 100));
+            b = Math.round(b + (255 - b) * (percent / 100));
+
+            return "#" + ((r < 16 ? "0" : "") + r.toString(16)) + ((g < 16 ? "0" : "") + g.toString(16)) + ((b < 16 ? "0" : "") + b.toString(16));
+        },
+        selectByTheme(light, dark) {
+            return this.$store.state.currentTheme === 'dark' ? dark : light;
         }
     }
 }

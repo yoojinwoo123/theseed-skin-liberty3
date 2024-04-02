@@ -34,13 +34,8 @@ export default {
         }
     },
     watch: {
-        $route(to, from) {
-            if (this.$store.state.localConfig["liberty.reset_search_on_move"] !== false) {
-                this.searchTextModel = '';
-                this.searchText = '';
-                this.cursor = -1;
-                this.items = [];
-            }
+        $route() {
+            if (this.$store.state.localConfig["liberty.reset_search_on_move"] !== false) this.reset();
         }
     }
 }
