@@ -90,13 +90,6 @@
         overflow-x: auto;
     }
 
-    .Liberty .content-wrapper .liberty-content .liberty-content-header,
-    .Liberty .content-wrapper .liberty-content .liberty-content-main,
-    .Liberty .content-wrapper .liberty-footer {
-        border-left: none;
-        border-right: none;
-    }
-
     .Liberty .content-wrapper .liberty-content .bottom-ads {
         padding: 0.5rem;
         background-color: #fff;
@@ -185,4 +178,3 @@
         padding-top: 0.04rem;
     }
 }
-
